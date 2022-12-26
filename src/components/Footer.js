@@ -5,7 +5,7 @@ export const Footer = () => {
   const {height, width} = useWindowDimensions();
 
   return (
-    <View>
+    <View style={styles.footer}>
       <Image
         source={require('../assets/imgs/footer_home_bg.png')}
         style={[styles.footerBg(width, height)]}
@@ -21,4 +21,8 @@ const styles = StyleSheet.create({
     width: width,
     bottom: -60,
   }),
+  footer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
 });

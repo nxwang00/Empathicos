@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, useWindowDimensions, Image} from 'react-native';
+import {Image} from 'react-native';
 import {Center, VStack, Pressable, View} from 'native-base';
-// import {useGlobal} from '../context/Global';
+import {useGlobal} from '../context/Global';
 import {Layout} from '../components/Layout';
 import {EmpaBtn} from '../components/EmpaBtn';
+import {FormBtn} from '../components/FormBtn';
 
-export const Home = props => {
-  const {height, width} = useWindowDimensions();
+export const Home = () => {
+  const global = useGlobal();
 
   const [loading, setLoading] = useState(true);
 
@@ -22,21 +23,24 @@ export const Home = props => {
     //     });
     //   })
     //   .finally(() => setLoading(false));
+
+    const screenInfo = {
+      title: 'Empathicos',
+      subTitle: 'Discover Your Magic',
+    };
+    global.onScreen(screenInfo);
+
     setLoading(false);
   }, []);
 
-  // const onLangBtnClicked = language => {
-  //   const langInfo = {
-  //     lang: language,
-  //   };
-  //   global.onLang(langInfo);
-  //   props.navigation.navigate('channel');
-  // };
+  const onEnter = () => {
+    console.log('click enter');
+  };
 
   return (
     <>
       <Layout>
-        <View pb="12">
+        <View mt="9" zIndex={1}>
           <VStack space={4} pb="5">
             <EmpaBtn title="soul vision" />
             <EmpaBtn title="inner peace" />
@@ -50,12 +54,7 @@ export const Home = props => {
               source={require('../assets/imgs/image_doorway.png')}
               style={{width: 200, height: 140, resizeMode: 'stretch'}}
             />
-            <Pressable>
-              <Image
-                source={require('../assets/imgs/rectangle_enter_btn.png')}
-                style={{width: 100, height: 35, resizeMode: 'stretch'}}
-              />
-            </Pressable>
+            <FormBtn title="Enter" onBtnPress={onEnter} />
           </Center>
         </View>
       </Layout>

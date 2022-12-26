@@ -11,10 +11,16 @@ import {
   Icon,
 } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useGlobal} from '../context/Global';
 
 export const Header = props => {
   const navigation = useNavigation();
+  const {globalData} = useGlobal();
   const {height, width} = useWindowDimensions();
+
+  const onProfileMenuPress = () => {
+    navigation.navigate('profile');
+  };
 
   return (
     <View>
@@ -48,9 +54,9 @@ export const Header = props => {
           borderColor="amber.300"
           borderRadius="md"
           mt="7">
-          <Menu.Item alignItems="flex-end">
-            <HStack space={3}>
-              <Text color="white" style={{fontSize: 18}}>
+          <Menu.Item alignItems="flex-end" onPress={onProfileMenuPress}>
+            <HStack space={2}>
+              <Text color="white" style={styles.menu}>
                 My Profie
               </Text>
               <Icon
@@ -62,8 +68,8 @@ export const Header = props => {
             </HStack>
           </Menu.Item>
           <Menu.Item alignItems="flex-end">
-            <HStack justifyContent="space-between" space={3}>
-              <Text color="white" style={{fontSize: 18}}>
+            <HStack space={2}>
+              <Text color="white" style={styles.menu}>
                 Invite Friends
               </Text>
               <Icon
@@ -75,8 +81,8 @@ export const Header = props => {
             </HStack>
           </Menu.Item>
           <Menu.Item alignItems="flex-end">
-            <HStack justifyContent="space-between" space={3}>
-              <Text color="white" style={{fontSize: 18}}>
+            <HStack space={2}>
+              <Text color="white" style={styles.menu}>
                 Journeys
               </Text>
               <Icon
@@ -88,8 +94,8 @@ export const Header = props => {
             </HStack>
           </Menu.Item>
           <Menu.Item alignItems="flex-end">
-            <HStack justifyContent="space-between" space={3}>
-              <Text color="white" style={{fontSize: 18}}>
+            <HStack space={2}>
+              <Text color="white" style={styles.menu}>
                 Favorites
               </Text>
               <Icon
@@ -103,8 +109,8 @@ export const Header = props => {
         </Menu>
       </HStack>
       <VStack alignItems="center">
-        <Text style={styles.title}>Empathicos</Text>
-        <Text style={styles.subtitle}>Discover Your Magic!</Text>
+        <Text style={styles.title}>{globalData?.title}</Text>
+        <Text style={styles.subtitle}>{globalData?.subTitle}</Text>
       </VStack>
     </View>
   );
@@ -121,6 +127,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'CenturyGothic',
     color: 'white',
+  },
+  menu: {
+    fontSize: 18,
+    fontFamily: 'CenturyGothic',
   },
   headerBg: (width, height) => ({
     position: 'absolute',

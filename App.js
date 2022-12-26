@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-// import {GlobalProvider} from './src/context/Global';
+import {GlobalProvider} from './src/context/Global';
 // import {UserProvider} from './src/context/User';
 import {Router} from './src/routes/Router';
 // import TrackPlayer from 'react-native-track-player';
@@ -26,15 +26,13 @@ const App = () => {
   // }, []);
 
   return (
-    // <GlobalProvider>
-    //   <UserProvider>
-    <WithSplashScreen isAppReady={isAppReady}>
-      <NativeBaseProvider>
-        <Router />
-      </NativeBaseProvider>
-    </WithSplashScreen>
-    //   </UserProvider>
-    // </GlobalProvider>
+    <GlobalProvider>
+      <WithSplashScreen isAppReady={isAppReady}>
+        <NativeBaseProvider>
+          <Router />
+        </NativeBaseProvider>
+      </WithSplashScreen>
+    </GlobalProvider>
   );
 };
 
