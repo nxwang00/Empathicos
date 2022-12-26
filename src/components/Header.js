@@ -22,6 +22,14 @@ export const Header = props => {
     navigation.navigate('profile');
   };
 
+  const onInviteMenuPress = () => {
+    navigation.navigate('invite');
+  };
+
+  const onJourneysMenuPress = () => {
+    navigation.navigate('journey');
+  };
+
   return (
     <View>
       <Image
@@ -67,7 +75,7 @@ export const Header = props => {
               />
             </HStack>
           </Menu.Item>
-          <Menu.Item alignItems="flex-end">
+          <Menu.Item alignItems="flex-end" onPress={onInviteMenuPress}>
             <HStack space={2}>
               <Text color="white" style={styles.menu}>
                 Invite Friends
@@ -80,7 +88,7 @@ export const Header = props => {
               />
             </HStack>
           </Menu.Item>
-          <Menu.Item alignItems="flex-end">
+          <Menu.Item alignItems="flex-end" onPress={onJourneysMenuPress}>
             <HStack space={2}>
               <Text color="white" style={styles.menu}>
                 Journeys

@@ -14,7 +14,7 @@ import {Layout} from '../components/Layout';
 import {FormBtn} from '../components/FormBtn';
 import {FormInput} from '../components/FormInput';
 
-export const Profile = () => {
+export const Invite = () => {
   const {height, width} = useWindowDimensions();
 
   const global = useGlobal();
@@ -35,7 +35,7 @@ export const Profile = () => {
     //   .finally(() => setLoading(false));
 
     const screenInfo = {
-      title: 'Profile',
+      title: 'Invite Friends',
       subTitle: '',
     };
     global.onScreen(screenInfo);
@@ -43,7 +43,7 @@ export const Profile = () => {
     setLoading(false);
   }, []);
 
-  const onProfileSave = () => {};
+  const onInviteSend = () => {};
 
   return (
     <>
@@ -61,16 +61,20 @@ export const Profile = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView px="6" pt="2">
             <Center>
-              <Image
-                source={require('../assets/imgs/icon_profile.png')}
-                style={{width: width * 0.2, height: width * 0.2}}
-              />
+              <Text
+                fontSize="md"
+                color="light.50"
+                fontFamily="CenturyGothic"
+                fontWeight="700"
+                textAlign="center">
+                We love you! Thank you for sharing the empathicos magic with
+                your friends and loved-ones!
+              </Text>
               <FormInput mt="0" label="Name" />
               <FormInput mt="2" label="Email" />
-              <FormInput mt="2" label="Birthday" />
               <FormControl mt="2">
                 <Text color="light.50" fontFamily="CenturyGothic" fontSize="md">
-                  About me
+                  Message
                 </Text>
                 <TextArea
                   focusOutlineColor="light.50"
@@ -79,7 +83,7 @@ export const Profile = () => {
                 />
               </FormControl>
               <View my="4">
-                <FormBtn title="Save" onBtnPress={onProfileSave} />
+                <FormBtn title="Send" onBtnPress={onInviteSend} />
               </View>
             </Center>
           </ScrollView>
@@ -88,10 +92,3 @@ export const Profile = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    fontFamily: 'CenturyGothic',
-    color: '#fff',
-  },
-});
