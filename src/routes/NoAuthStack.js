@@ -1,39 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Home} from '../screens/Home';
-import {Profile} from '../screens/Profile';
-import {Invite} from '../screens/Invite';
-import {Journey} from '../screens/Journey';
-import {View, StyleSheet} from 'react-native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {Login} from '../screens/Login';
 
-// const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
+// const Drawer = createDrawerNavigator();
 
 export const NoAuthStack = () => {
   const navigation = useNavigation();
 
   return (
-    // <>
-    //   <Stack.Navigator
-    //     initialRouteName="home"
-    //     screenOptions={{
-    //       headerShown: false,
-    //     }}>
-    //     <Stack.Screen name="home" component={Home} />
-    //   </Stack.Navigator>
-    // </>
-    <Drawer.Navigator
-      useLegacyImplementation
-      initialRouteName="home"
+    <Stack.Navigator
+      initialRouteName="login"
       screenOptions={{
         headerShown: false,
       }}>
-      <Drawer.Screen name="home" component={Home} />
-      <Drawer.Screen name="profile" component={Profile} />
-      <Drawer.Screen name="invite" component={Invite} />
-      <Drawer.Screen name="journey" component={Journey} />
-    </Drawer.Navigator>
+      <Stack.Screen name="login" component={Login} />
+    </Stack.Navigator>
   );
 };

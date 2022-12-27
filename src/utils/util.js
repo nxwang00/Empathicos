@@ -1,1 +1,1 @@
-export const baseUrl = 'http://localhost:8000/api/store/v1';
+export const baseUrl = 'https://app.andreaplesha.com/api/store/v1';

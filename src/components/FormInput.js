@@ -1,19 +1,51 @@
-import React, {useState, useEffect} from 'react';
-import {FormControl, Text, Input} from 'native-base';
+import React, {useState, useEffect, useRef} from 'react';
+import {Keyboard} from 'react-native';
+import {FormControl, Text, Input, WarningOutlineIcon} from 'native-base';
 
 export const FormInput = props => {
-  const {label, mt} = props;
+  const {label, mt, isRequired, errMsg, value, onChange} = props;
+
+  const localInputRef = useRef();
+
+  const inputType = label === 'Password' ? 'password' : 'text';
+  const isInvalid = errMsg ? true : false;
+
+  const keyboardDidHideCallback = () => {
+    localInputRef.current.blur?.();
+  };
+
+  useEffect(() => {
+    const keyboardDidHideSubscription = Keyboard.addListener(
+      'keyboardDidHide',
+      keyboardDidHideCallback,
+    );
+
+    return () => {
+      keyboardDidHideSubscription?.remove();
+    };
+  }, []);
+
   return (
-    <FormControl mt={mt}>
-      <Text color="light.50" fontFamily="CenturyGothic" fontSize="md">
+    <FormControl mt={mt} isRequired={isRequired} isInvalid={isInvalid}>
+      <FormControl.Label
+        _text={{color: 'white', fontFamily: 'CenturyGothic', fontSize: 16}}>
         {label}
-      </Text>
+      </FormControl.Label>
       <Input
+        ref={ref => {
+          localInputRef && (localInputRef.current = ref);
+        }}
         w="100%"
-        type="text"
-        focusOutlineColor="light.50"
-        _focus={{color: 'white'}}
+        color="white"
+        fontSize="16"
+        type={inputType}
+        focusOutlineColor="white"
+        value={value}
+        onChangeText={onChange}
       />
+      <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+        {errMsg}
+      </FormControl.ErrorMessage>
     </FormControl>
   );
 };
