@@ -7,7 +7,8 @@ export const FormInput = props => {
 
   const localInputRef = useRef();
 
-  const inputType = label === 'Password' ? 'password' : 'text';
+  const inputType =
+    label === 'Password' || label === 'Confirm Password' ? 'password' : 'text';
   const isInvalid = errMsg ? true : false;
 
   const keyboardDidHideCallback = () => {

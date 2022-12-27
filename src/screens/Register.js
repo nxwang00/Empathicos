@@ -1,14 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/core';
-import {useWindowDimensions} from 'react-native';
+import {Image, useWindowDimensions, StyleSheet} from 'react-native';
 import {
   Center,
   View,
   ScrollView,
-  Pressable,
+  FormControl,
+  TextArea,
   Text,
   KeyboardAvoidingView,
+  Pressable,
 } from 'native-base';
 import {useGlobal} from '../context/Global';
 import {useUser} from '../context/User';
@@ -17,10 +19,9 @@ import {FormBtn} from '../components/FormBtn';
 import {FormInput} from '../components/FormInput';
 import {baseUrl} from '../utils/util';
 
-export const Login = () => {
-  const {height, width} = useWindowDimensions();
-
+export const Register = () => {
   const navigation = useNavigation();
+  const {height, width} = useWindowDimensions();
 
   const global = useGlobal();
   const user = useUser();
@@ -28,6 +29,7 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmpassword, setConfirmPassword] = useState('');
   const [emailErr, setEmailErr] = useState('');
   const [PasswordErr, setPasswordErr] = useState('');
 
@@ -35,12 +37,12 @@ export const Login = () => {
     const screenInfo = {
       title: 'Empathicos',
       subTitle: '',
-      name: 'login',
+      name: 'register',
     };
     global.onScreen(screenInfo);
   }, []);
 
-  const onLogin = async () => {
+  const onRegister = async () => {
     if (!email) {
       setEmailErr('Email is required.');
       return;
@@ -57,7 +59,9 @@ export const Login = () => {
       return;
     }
 
-    const url = `${baseUrl}/auth/signin`;
+    if (PasswordErr !== '') return;
+
+    const url = `${baseUrl}/auth/register`;
     var options = {
       method: 'POST',
       headers: {
@@ -96,12 +100,25 @@ export const Login = () => {
   };
 
   const onPasswordChanged = txt => {
-    setPasswordErr('');
+    if (txt !== confirmpassword) {
+      setPasswordErr('Not matched confirmed password.');
+    } else {
+      setPasswordErr('');
+    }
     setPassword(txt);
   };
 
-  const onRegisterPress = () => {
-    navigation.navigate('register');
+  const onConfirmPasswordChanged = txt => {
+    if (password !== txt) {
+      setPasswordErr('Not matched confirmed password.');
+    } else {
+      setPasswordErr('');
+    }
+    setConfirmPassword(txt);
+  };
+
+  const onLoginPress = () => {
+    navigation.navigate('login');
   };
 
   return (
@@ -126,7 +143,7 @@ export const Login = () => {
                 fontWeight="700"
                 fontSize="2xl"
                 textAlign="center">
-                Login
+                Register
               </Text>
               <FormInput
                 mt="2"
@@ -144,21 +161,28 @@ export const Login = () => {
                 value={password}
                 onChange={txt => onPasswordChanged(txt)}
               />
+              <FormInput
+                mt="4"
+                label="Confirm Password"
+                isRequired={false}
+                value={confirmpassword}
+                onChange={txt => onConfirmPasswordChanged(txt)}
+              />
               <View mt="8">
                 <FormBtn
-                  title="Login"
-                  onBtnPress={() => onLogin()}
+                  title="Register"
+                  onBtnPress={() => onRegister()}
                   loading={loading}
                 />
               </View>
-              <View mt="3">
-                <Pressable onPress={onRegisterPress}>
+              <View mt="3" mb="5">
+                <Pressable onPress={onLoginPress}>
                   <Text
                     color="pink.700"
                     fontFamily="CenturyGothic"
                     fontSize="lg"
                     fontWeight="bold">
-                    Register
+                    Login
                   </Text>
                 </Pressable>
               </View>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../screens/Login';
+import {Register} from '../screens/Register';
 
 const Stack = createNativeStackNavigator();
 // const Drawer = createDrawerNavigator();
@@ -16,6 +17,7 @@ export const NoAuthStack = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="login" component={Login} />
+      <Stack.Screen name="register" component={Register} />
     </Stack.Navigator>
   );
 };
