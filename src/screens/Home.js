@@ -27,6 +27,7 @@ export const Home = () => {
     const screenInfo = {
       title: 'Empathicos',
       subTitle: 'Discover Your Magic',
+      name: 'home',
     };
     global.onScreen(screenInfo);
 

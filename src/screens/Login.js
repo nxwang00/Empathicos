@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import Toast from 'react-native-toast-message';
 import {Image, useWindowDimensions, StyleSheet} from 'react-native';
 import {
   Center,
@@ -10,6 +11,7 @@ import {
   KeyboardAvoidingView,
 } from 'native-base';
 import {useGlobal} from '../context/Global';
+import {useUser} from '../context/User';
 import {Layout} from '../components/Layout';
 import {FormBtn} from '../components/FormBtn';
 import {FormInput} from '../components/FormInput';
@@ -19,6 +21,7 @@ export const Login = () => {
   const {height, width} = useWindowDimensions();
 
   const global = useGlobal();
+  const user = useUser();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -65,10 +68,24 @@ export const Login = () => {
       }),
     };
     setLoading(true);
-    const result = await fetch(url, options);
-    const resResult = await result.json();
-    setLoading(false);
-    console.log(resResult);
+    try {
+      const result = await fetch(url, options);
+      const resResult = await result.json();
+      setLoading(false);
+      if (!resResult.status) {
+        Toast.show({
+          type: 'error',
+          text1: resResult.message,
+        });
+      } else {
+        user.onUser(resResult.results);
+      }
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: 'Network not working',
+      });
+    }
   };
 
   const onEmailChanged = txt => {

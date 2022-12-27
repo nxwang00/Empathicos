@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {StyleSheet, View, Image, useWindowDimensions} from 'react-native';
 import {
@@ -9,14 +9,21 @@ import {
   Text,
   Menu,
   Icon,
+  Divider,
 } from 'native-base';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from 'react-native-toast-message';
 import {useGlobal} from '../context/Global';
+import {useUser} from '../context/User';
+import {AvatarMenuItem} from './AvatarMenuItem';
+import {baseUrl} from '../utils/util';
 
-export const Header = props => {
+export const Header = () => {
   const navigation = useNavigation();
   const {globalData} = useGlobal();
+  const {userData, onLogout} = useUser();
   const {height, width} = useWindowDimensions();
+
+  const [loading, setLoading] = useState(false);
 
   const onProfileMenuPress = () => {
     navigation.navigate('profile');
@@ -28,6 +35,38 @@ export const Header = props => {
 
   const onJourneysMenuPress = () => {
     navigation.navigate('journey');
+  };
+
+  const onLogoutPress = async () => {
+    const token = userData.access_token;
+
+    const url = `${baseUrl}/auth/signout`;
+    const options = {
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    try {
+      setLoading(true);
+      const result = await fetch(url, options);
+      const resResult = await result.json();
+      console.log(resResult);
+      setLoading(false);
+      if (!resResult.status) {
+        Toast.show({
+          type: 'error',
+          text1: resResult.message,
+        });
+      } else {
+        onLogout();
+      }
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: 'Network not working',
+      });
+    }
   };
 
   const justifyContentStyle =
@@ -70,58 +109,32 @@ export const Header = props => {
             borderColor="amber.300"
             borderRadius="md"
             mt="7">
-            <Menu.Item alignItems="flex-end" onPress={onProfileMenuPress}>
-              <HStack space={2}>
-                <Text color="white" style={styles.menu}>
-                  My Profie
-                </Text>
-                <Icon
-                  as={MaterialCommunityIcons}
-                  name="account"
-                  color="white"
-                  size={5}
-                />
-              </HStack>
-            </Menu.Item>
-            <Menu.Item alignItems="flex-end" onPress={onInviteMenuPress}>
-              <HStack space={2}>
-                <Text color="white" style={styles.menu}>
-                  Invite Friends
-                </Text>
-                <Icon
-                  as={MaterialCommunityIcons}
-                  name="account-multiple"
-                  color="white"
-                  size={5}
-                />
-              </HStack>
-            </Menu.Item>
-            <Menu.Item alignItems="flex-end" onPress={onJourneysMenuPress}>
-              <HStack space={2}>
-                <Text color="white" style={styles.menu}>
-                  Journeys
-                </Text>
-                <Icon
-                  as={MaterialCommunityIcons}
-                  name="seal"
-                  color="white"
-                  size={5}
-                />
-              </HStack>
-            </Menu.Item>
-            <Menu.Item alignItems="flex-end">
-              <HStack space={2}>
-                <Text color="white" style={styles.menu}>
-                  Favorites
-                </Text>
-                <Icon
-                  as={MaterialCommunityIcons}
-                  name="heart"
-                  color="white"
-                  size={5}
-                />
-              </HStack>
-            </Menu.Item>
+            <AvatarMenuItem
+              title="My Profie"
+              icon="account"
+              onItemPress={onProfileMenuPress}
+            />
+            <AvatarMenuItem
+              title="Invite Friends"
+              icon="account-multiple"
+              onItemPress={onInviteMenuPress}
+            />
+            <AvatarMenuItem
+              title="Journeys"
+              icon="seal"
+              onItemPress={onJourneysMenuPress}
+            />
+            <AvatarMenuItem
+              title="Favorites"
+              icon="heart"
+              onItemPress={() => console.log('click favorites')}
+            />
+            <Divider mt="2" w="100%" />
+            <AvatarMenuItem
+              title="Logout"
+              icon="logout"
+              onItemPress={onLogoutPress}
+            />
           </Menu>
         )}
       </HStack>
@@ -144,10 +157,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'CenturyGothic',
     color: 'white',
-  },
-  menu: {
-    fontSize: 18,
-    fontFamily: 'CenturyGothic',
   },
   headerBg: (width, height) => ({
     position: 'absolute',
