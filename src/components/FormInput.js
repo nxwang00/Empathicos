@@ -3,7 +3,7 @@ import {Keyboard} from 'react-native';
 import {FormControl, Text, Input, WarningOutlineIcon} from 'native-base';
 
 export const FormInput = props => {
-  const {label, mt, isRequired, errMsg, value, onChange} = props;
+  const {label, mt, isRequired, isReadOnly, errMsg, value, onChange} = props;
 
   const localInputRef = useRef();
 
@@ -27,7 +27,11 @@ export const FormInput = props => {
   }, []);
 
   return (
-    <FormControl mt={mt} isRequired={isRequired} isInvalid={isInvalid}>
+    <FormControl
+      mt={mt}
+      isRequired={isRequired}
+      isInvalid={isInvalid}
+      isReadOnly={isReadOnly}>
       <FormControl.Label
         _text={{color: 'white', fontFamily: 'CenturyGothic', fontSize: 16}}>
         {label}
