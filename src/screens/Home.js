@@ -1,38 +1,59 @@
 import React, {useState, useEffect} from 'react';
-import {Image} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import {Image, ActivityIndicator} from 'react-native';
 import {Center, VStack, Pressable, View} from 'native-base';
-import {useGlobal} from '../context/Global';
+import Toast from 'react-native-toast-message';
+import {baseUrl} from '../utils/util';
+import {useUser} from '../context/User';
 import {Layout} from '../components/Layout';
 import {EmpaBtn} from '../components/EmpaBtn';
 import {FormBtn} from '../components/FormBtn';
 
 export const Home = () => {
-  const global = useGlobal();
+  const {userData} = useUser();
 
   const [loading, setLoading] = useState(true);
+  const [menus, setMenus] = useState([]);
+
+  const screenInfo = {
+    title: 'Empathicos',
+    subTitle: 'Discover Your Magic',
+    name: 'home',
+  };
 
   useEffect(() => {
-    // fetch(`${baseUrl}/web/api/language/`)
-    //   .then(response => response.json())
-    //   .then(json => setLangs(json))
-    //   .catch(error => {
-    //     Toast.show({
-    //       type: 'error',
-    //       text1: 'Error',
-    //       text2: error,
-    //     });
-    //   })
-    //   .finally(() => setLoading(false));
-
-    const screenInfo = {
-      title: 'Empathicos',
-      subTitle: 'Discover Your Magic',
-      name: 'home',
-    };
-    global.onScreen(screenInfo);
-
-    setLoading(false);
+    getHomeMenus();
   }, []);
+
+  const getHomeMenus = async () => {
+    const token = userData.access_token;
+    const url = `${baseUrl}/dashboard-category`;
+    var options = {
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    try {
+      const result = await fetch(url, options);
+      const resResult = await result.json();
+      if (!resResult.status) {
+        Toast.show({
+          type: 'error',
+          text1: resResult.message,
+        });
+      } else {
+        setMenus(resResult.results);
+      }
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: 'Network not working',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onEnter = () => {
     console.log('click enter');
@@ -40,24 +61,29 @@ export const Home = () => {
 
   return (
     <>
-      <Layout>
-        <View mt="9" zIndex={1}>
-          <VStack space={4} pb="5">
-            <EmpaBtn title="soul vision" />
-            <EmpaBtn title="inner peace" />
-            <EmpaBtn title="personal message" />
-            <EmpaBtn title="self-inquiry journal" />
-            <EmpaBtn title="mindful living" />
-            <EmpaBtn title="meet ana" />
-          </VStack>
-          <Center>
-            <Image
-              source={require('../assets/imgs/image_doorway.png')}
-              style={{width: 200, height: 140, resizeMode: 'stretch'}}
-            />
-            <FormBtn title="Enter" onBtnPress={onEnter} />
-          </Center>
-        </View>
+      <Layout screenInfo={screenInfo}>
+        {loading ? (
+          <ActivityIndicator
+            color="#fff"
+            size="large"
+            style={{marginTop: '50%'}}
+          />
+        ) : (
+          <View mt="9" zIndex={1}>
+            <VStack space={4} pb="5">
+              {menus.map(menu => (
+                <EmpaBtn title={menu.title} key={menu.id} />
+              ))}
+            </VStack>
+            <Center>
+              <Image
+                source={require('../assets/imgs/image_doorway.png')}
+                style={{width: 200, height: 140, resizeMode: 'stretch'}}
+              />
+              <FormBtn title="Enter" onBtnPress={onEnter} />
+            </Center>
+          </View>
+        )}
       </Layout>
     </>
   );

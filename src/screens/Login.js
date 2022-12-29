@@ -10,7 +10,6 @@ import {
   Text,
   KeyboardAvoidingView,
 } from 'native-base';
-import {useGlobal} from '../context/Global';
 import {useUser} from '../context/User';
 import {Layout} from '../components/Layout';
 import {FormBtn} from '../components/FormBtn';
@@ -18,11 +17,16 @@ import {FormInput} from '../components/FormInput';
 import {baseUrl} from '../utils/util';
 
 export const Login = () => {
+  const screenInfo = {
+    title: 'Empathicos',
+    subTitle: '',
+    name: 'login',
+  };
+
   const {height, width} = useWindowDimensions();
 
   const navigation = useNavigation();
 
-  const global = useGlobal();
   const user = useUser();
 
   const [loading, setLoading] = useState(false);
@@ -30,15 +34,6 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [emailErr, setEmailErr] = useState('');
   const [PasswordErr, setPasswordErr] = useState('');
-
-  useEffect(() => {
-    const screenInfo = {
-      title: 'Empathicos',
-      subTitle: '',
-      name: 'login',
-    };
-    global.onScreen(screenInfo);
-  }, []);
 
   const onLogin = async () => {
     if (!email) {
@@ -106,7 +101,7 @@ export const Login = () => {
 
   return (
     <>
-      <Layout>
+      <Layout screenInfo={screenInfo}>
         <KeyboardAvoidingView
           w={width * 0.9}
           h={height * 0.53}

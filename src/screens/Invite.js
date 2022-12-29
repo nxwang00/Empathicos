@@ -9,7 +9,6 @@ import {
   Text,
   KeyboardAvoidingView,
 } from 'native-base';
-import {useGlobal} from '../context/Global';
 import {Layout} from '../components/Layout';
 import {FormBtn} from '../components/FormBtn';
 import {FormInput} from '../components/FormInput';
@@ -17,29 +16,15 @@ import {FormInput} from '../components/FormInput';
 export const Invite = () => {
   const {height, width} = useWindowDimensions();
 
-  const global = useGlobal();
+  const screenInfo = {
+    title: 'Invite Friends',
+    subTitle: '',
+    name: 'invite_friend',
+  };
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // fetch(`${baseUrl}/web/api/language/`)
-    //   .then(response => response.json())
-    //   .then(json => setLangs(json))
-    //   .catch(error => {
-    //     Toast.show({
-    //       type: 'error',
-    //       text1: 'Error',
-    //       text2: error,
-    //     });
-    //   })
-    //   .finally(() => setLoading(false));
-
-    const screenInfo = {
-      title: 'Invite Friends',
-      subTitle: '',
-    };
-    global.onScreen(screenInfo);
-
     setLoading(false);
   }, []);
 
@@ -47,7 +32,7 @@ export const Invite = () => {
 
   return (
     <>
-      <Layout>
+      <Layout screenInfo={screenInfo}>
         <KeyboardAvoidingView
           w={width * 0.9}
           h={height * 0.53}

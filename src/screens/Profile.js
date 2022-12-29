@@ -4,9 +4,6 @@ import {
   Center,
   View,
   ScrollView,
-  FormControl,
-  TextArea,
-  Text,
   KeyboardAvoidingView,
   Pressable,
 } from 'native-base';
@@ -14,7 +11,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {format} from 'date-fns';
 import Toast from 'react-native-toast-message';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {useGlobal} from '../context/Global';
 import {useUser} from '../context/User';
 import {Layout} from '../components/Layout';
 import {FormBtn} from '../components/FormBtn';
@@ -23,9 +19,14 @@ import {FormTextArea} from '../components/FormTextArea';
 import {baseUrl} from '../utils/util';
 
 export const Profile = () => {
+  const screenInfo = {
+    title: 'Profile',
+    subTitle: '',
+    name: 'profie',
+  };
+
   const {height, width} = useWindowDimensions();
 
-  const global = useGlobal();
   const {userData, onUser} = useUser();
 
   const [loading, setLoading] = useState(false);
@@ -56,15 +57,6 @@ export const Profile = () => {
       style={{width: width * 0.2, height: width * 0.2}}
     />
   );
-
-  useEffect(() => {
-    const screenInfo = {
-      title: 'Profile',
-      subTitle: '',
-      name: 'profie',
-    };
-    global.onScreen(screenInfo);
-  }, []);
 
   const onProfileSave = async () => {
     if (!email) {
@@ -159,7 +151,7 @@ export const Profile = () => {
 
   return (
     <>
-      <Layout>
+      <Layout screenInfo={screenInfo}>
         <KeyboardAvoidingView
           w={width * 0.9}
           h={height * 0.53}

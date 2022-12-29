@@ -10,7 +10,7 @@ export const Layout = props => {
         source={require('../assets/imgs/image_bgstars.png')}
         resizeMode="cover"
         style={styles.image}>
-        <Header />
+        <Header screenInfo={props.screenInfo} />
         {props.children}
         <Footer />
       </ImageBackground>

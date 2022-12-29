@@ -17,9 +17,10 @@ import {useUser} from '../context/User';
 import {AvatarMenuItem} from './AvatarMenuItem';
 import {baseUrl} from '../utils/util';
 
-export const Header = () => {
+export const Header = props => {
+  const {screenInfo} = props;
   const navigation = useNavigation();
-  const {globalData} = useGlobal();
+
   const {userData, onLogout} = useUser();
   const {height, width} = useWindowDimensions();
 
@@ -51,7 +52,6 @@ export const Header = () => {
       setLoading(true);
       const result = await fetch(url, options);
       const resResult = await result.json();
-      console.log(resResult);
       setLoading(false);
       if (!resResult.status) {
         Toast.show({
@@ -70,7 +70,7 @@ export const Header = () => {
   };
 
   const justifyContentStyle =
-    globalData?.name !== 'login' && globalData?.name !== 'register'
+    screenInfo?.name !== 'login' && screenInfo?.name !== 'register'
       ? 'space-between'
       : 'center';
 
@@ -81,7 +81,7 @@ export const Header = () => {
         style={[styles.headerBg(width, height)]}
       />
       <HStack justifyContent={justifyContentStyle} alignItems="center" px="3">
-        {globalData?.name !== 'login' && globalData?.name !== 'register' && (
+        {screenInfo?.name !== 'login' && screenInfo?.name !== 'register' && (
           <Pressable onPress={() => navigation.openDrawer()}>
             <HamburgerIcon size="7" color="white" />
           </Pressable>
@@ -90,7 +90,7 @@ export const Header = () => {
           source={require('../assets/imgs/icon_app.png')}
           style={{width: width * 0.15, height: width * 0.15}}
         />
-        {globalData?.name !== 'login' && globalData?.name !== 'register' && (
+        {screenInfo?.name !== 'login' && screenInfo?.name !== 'register' && (
           <Menu
             trigger={triggerProps => {
               return (
@@ -139,8 +139,8 @@ export const Header = () => {
         )}
       </HStack>
       <VStack alignItems="center">
-        <Text style={styles.title}>{globalData?.title}</Text>
-        <Text style={styles.subtitle}>{globalData?.subTitle}</Text>
+        <Text style={styles.title}>{screenInfo?.title}</Text>
+        <Text style={styles.subtitle}>{screenInfo?.subTitle}</Text>
       </VStack>
     </View>
   );

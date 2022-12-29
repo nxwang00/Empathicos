@@ -5,7 +5,7 @@ import {Home} from '../screens/Home';
 import {Profile} from '../screens/Profile';
 import {Invite} from '../screens/Invite';
 import {Journey} from '../screens/Journey';
-import {View, StyleSheet} from 'react-native';
+import {JourneyDetail} from '../screens/JourneyDetail';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 // const Stack = createNativeStackNavigator();
@@ -25,6 +25,7 @@ export const AuthStack = () => {
       <Drawer.Screen name="profile" component={Profile} />
       <Drawer.Screen name="invite" component={Invite} />
       <Drawer.Screen name="journey" component={Journey} />
+      <Drawer.Screen name="journey_detail" component={JourneyDetail} />
     </Drawer.Navigator>
   );
 };

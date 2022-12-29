@@ -28,9 +28,8 @@ const GlobalProvider = ({children}) => {
 
   const onScreen = async _screenData => {
     try {
-      const newGlobalData = {...globalData, ..._screenData};
-      setGlobalData(newGlobalData);
-      await AsyncStorage.setItem('@GlobalData', JSON.stringify(newGlobalData));
+      setGlobalData(_screenData);
+      await AsyncStorage.setItem('@GlobalData', JSON.stringify(_screenData));
     } catch (error) {
       console.log('Set async storage error: ', error);
     }
