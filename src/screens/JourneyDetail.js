@@ -1,21 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Image,
-  useWindowDimensions,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {Image, useWindowDimensions, ActivityIndicator} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  Center,
-  View,
-  Text,
-  HStack,
-  Pressable,
-  Icon,
-  ScrollView,
-} from 'native-base';
+import {Center, View, Text, HStack, Pressable, Icon} from 'native-base';
 import Toast from 'react-native-toast-message';
 import {baseUrl} from '../utils/util';
 import {useUser} from '../context/User';
@@ -25,7 +11,9 @@ import {FormBtn} from '../components/FormBtn';
 export const JourneyDetail = props => {
   const detail = props.route.params.journey;
   const detailObj = JSON.parse(detail);
-  console.log(detailObj);
+
+  const regex = /(<([^>]+)>)/gi;
+  const desc = detailObj.description.replace(regex, '');
 
   const screenInfo = {
     title: 'Journey',
@@ -39,6 +27,7 @@ export const JourneyDetail = props => {
 
   const [loading, setLoading] = useState(true);
   const [showStatus, setShowStatus] = useState('thumbnail');
+  const [favoriteStatus, setFavoriteStatus] = useState(detailObj.favorite);
 
   const onToJourneyPress = () => {};
 
@@ -48,6 +37,48 @@ export const JourneyDetail = props => {
 
   const onThumbnailPress = () => {
     setShowStatus('thumbnail');
+  };
+
+  const onFavouriteJourney = async () => {
+    if (loading) return;
+
+    // change the favorite icon on UI
+    setFavoriteStatus(!favoriteStatus);
+
+    // send request
+    const token = userData.access_token;
+    const url = `${baseUrl}/badges/favorites`;
+    var options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        id: detailObj.id,
+        status: favoriteStatus ? 'removed' : 'add',
+      }),
+    };
+    setLoading(true);
+    try {
+      const result = await fetch(url, options);
+      const resResult = await result.json();
+      setLoading(false);
+      if (!resResult.status) {
+        Toast.show({
+          type: 'error',
+          text1: resResult.message,
+        });
+      } else {
+        console.log(resResult.message);
+      }
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: 'Network not working',
+      });
+    }
   };
 
   return (
@@ -114,23 +145,22 @@ export const JourneyDetail = props => {
                   }}
                 />
               </View>
-              <Pressable mt="3" bg="primary.600" p="3" borderRadius="50">
-                <Icon
-                  as={MaterialCommunityIcons}
-                  name="heart-outline"
-                  color="white"
-                  size={5}
-                />
-              </Pressable>
             </>
           ) : (
-            <Pressable my="6" mx="6">
-              <HStack space="3" alignItems="center" w="full">
+            <Pressable
+              mt="6"
+              mb="2"
+              mx="4"
+              borderColor="amber.400"
+              borderWidth="2"
+              borderRadius="10">
+              <HStack alignItems="center" w="full">
                 <Center
                   bg="black"
                   w="1/4"
-                  style={{height: height * 0.13}}
-                  p="1">
+                  style={{height: height * 0.14}}
+                  p="1"
+                  borderLeftRadius="10">
                   <Image
                     source={{
                       uri: detailObj.image,
@@ -141,16 +171,50 @@ export const JourneyDetail = props => {
                     }}
                   />
                 </Center>
-                <View bg="primary.600" w="3/4">
-                  <Text>{detailObj.name}</Text>
+                <View
+                  bg="primary.600"
+                  w="3/4"
+                  pl="2"
+                  pt="1"
+                  borderRightRadius="10">
+                  <Text
+                    fontFamily="CenturyGothic"
+                    fontSize="14"
+                    color="white"
+                    fontWeight="bold">
+                    {detailObj.name}
+                  </Text>
                   <View style={{height: height * 0.1}}>
-                    <Text>{detailObj.description}</Text>
+                    <Text fontFamily="CenturyGothic" color="white">
+                      {desc}
+                    </Text>
                   </View>
                 </View>
               </HStack>
             </Pressable>
           )}
-
+          <Pressable
+            mt="3"
+            bg="primary.600"
+            p="3"
+            borderRadius="50"
+            onPress={onFavouriteJourney}>
+            {favoriteStatus ? (
+              <Icon
+                as={MaterialCommunityIcons}
+                name="heart"
+                color="rose.600"
+                size={5}
+              />
+            ) : (
+              <Icon
+                as={MaterialCommunityIcons}
+                name="heart-outline"
+                color="white"
+                size={5}
+              />
+            )}
+          </Pressable>
           <View mt="4">
             <FormBtn
               title="Go to your Journey"
