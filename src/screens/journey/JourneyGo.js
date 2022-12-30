@@ -1,18 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, Animated} from 'react-native';
+import {ActivityIndicator, Animated, useWindowDimensions} from 'react-native';
 import Toast from 'react-native-toast-message';
+import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
 import {Template} from './components/Template';
+import {View} from 'native-base';
 
 export const JourneyGo = props => {
   const id = props.route.params.id;
+  const {height, width} = useWindowDimensions();
 
   const screenInfo = {
     title: 'Journey',
     subTitle: '',
-    header: '2',
+    header: '3',
     footer: '2',
   };
 
@@ -67,31 +70,42 @@ export const JourneyGo = props => {
             style={{marginTop: '50%'}}
           />
         ) : (
-          <Animated.ScrollView
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{flexGrow: 1}}
-            scrollEventThrottle={16}
-            onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {x: scrollX}}}],
-              {
-                useNativeDriver: true,
-              },
-            )}
-            // onScrollEndDrag={event => {
-            //   console.log(event.nativeEvent.contentOffset.x);
-            // }}
-          >
-            {templates.map(temp => (
-              <Template
-                key={temp.id}
-                image={temp.value.image}
-                title={temp.value.title}
-                description={temp.value.description}
+          <View>
+            <Animated.ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              // contentContainerStyle={{flexGrow: 1}}
+              // scrollEventThrottle={16}
+              onScroll={Animated.event(
+                [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                {
+                  useNativeDriver: true,
+                },
+              )}
+              // onScrollEndDrag={event => {
+              //   console.log(event.nativeEvent.contentOffset.x);
+              // }}
+            >
+              {templates.map(temp => (
+                <Template
+                  key={temp.id}
+                  image={temp.value.image}
+                  title={temp.value.title}
+                  description={temp.value.description}
+                />
+              ))}
+            </Animated.ScrollView>
+            <View mt="4">
+              <RNAnimatedScrollIndicators
+                numberOfCards={templates.length}
+                scrollWidth={width}
+                activeColor={'blue'}
+                inActiveColor={'white'}
+                scrollAnimatedValue={scrollX}
               />
-            ))}
-          </Animated.ScrollView>
+            </View>
+          </View>
         )}
       </Layout>
     </>

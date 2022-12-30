@@ -18,7 +18,7 @@ export const JourneyDetail = props => {
   const screenInfo = {
     title: 'Journey',
     subTitle: '',
-    header: '1',
+    header: '2',
     footer: '0',
   };
 

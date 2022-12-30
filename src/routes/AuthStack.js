@@ -19,6 +19,7 @@ export const AuthStack = () => {
     <Drawer.Navigator
       useLegacyImplementation
       initialRouteName="home"
+      backBehavior="history"
       screenOptions={{
         headerShown: false,
       }}>

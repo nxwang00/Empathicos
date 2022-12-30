@@ -40,6 +40,10 @@ export const Header = props => {
     navigation.navigate('journey');
   };
 
+  const onGoBackScreen = () => {
+    navigation.goBack();
+  };
+
   const onLogoutPress = async () => {
     const token = userData.access_token;
 
@@ -76,15 +80,15 @@ export const Header = props => {
 
   return (
     <View>
-      {screenInfo.header === '2' ? <HeaderBg num="1" /> : <HeaderBg />}
+      {screenInfo.header === '3' ? <HeaderBg num="1" /> : <HeaderBg />}
       <HStack justifyContent={justifyContentStyle} alignItems="center" px="3">
         {screenInfo.header === '1' && (
           <Pressable onPress={() => navigation.openDrawer()}>
             <HamburgerIcon size="7" color="white" />
           </Pressable>
         )}
-        {screenInfo.header === '2' && (
-          <Pressable>
+        {(screenInfo.header === '2' || screenInfo.header === '3') && (
+          <Pressable onPress={onGoBackScreen}>
             <ChevronLeftIcon size="6" color="white" />
           </Pressable>
         )}

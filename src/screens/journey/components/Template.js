@@ -7,7 +7,7 @@ export const Template = props => {
   const {height, width} = useWindowDimensions();
 
   return (
-    <ScrollView h="2/3" mt="9" zIndex="1">
+    <ScrollView style={{height: height * 0.5}} mt="9" zIndex="1">
       <Center>
         <View>
           <Image
