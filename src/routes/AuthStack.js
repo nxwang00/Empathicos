@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Home} from '../screens/Home';
-import {Profile} from '../screens/Profile';
-import {Invite} from '../screens/Invite';
-import {Journey} from '../screens/Journey';
-import {JourneyDetail} from '../screens/JourneyDetail';
+import {Profile} from '../screens/user/Profile';
+import {Invite} from '../screens/user/Invite';
+import {Journey} from '../screens/journey/Journey';
+import {JourneyDetail} from '../screens/journey/JourneyDetail';
+import {JourneyGo} from '../screens/journey/JourneyGo';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 // const Stack = createNativeStackNavigator();
@@ -26,6 +27,7 @@ export const AuthStack = () => {
       <Drawer.Screen name="invite" component={Invite} />
       <Drawer.Screen name="journey" component={Journey} />
       <Drawer.Screen name="journey_detail" component={JourneyDetail} />
+      <Drawer.Screen name="journey_go" component={JourneyGo} />
     </Drawer.Navigator>
   );
 };

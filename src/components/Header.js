@@ -1,21 +1,23 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {StyleSheet, View, Image, useWindowDimensions} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   HStack,
   VStack,
   Pressable,
   HamburgerIcon,
+  ChevronLeftIcon,
   Text,
   Menu,
   Icon,
   Divider,
 } from 'native-base';
 import Toast from 'react-native-toast-message';
-import {useGlobal} from '../context/Global';
 import {useUser} from '../context/User';
 import {AvatarMenuItem} from './AvatarMenuItem';
 import {baseUrl} from '../utils/util';
+import {HeaderBg} from './HeaderBg';
 
 export const Header = props => {
   const {screenInfo} = props;
@@ -70,27 +72,27 @@ export const Header = props => {
   };
 
   const justifyContentStyle =
-    screenInfo?.name !== 'login' && screenInfo?.name !== 'register'
-      ? 'space-between'
-      : 'center';
+    screenInfo.header === '0' ? 'center' : 'space-between';
 
   return (
     <View>
-      <Image
-        source={require('../assets/imgs/header_bg.png')}
-        style={[styles.headerBg(width, height)]}
-      />
+      {screenInfo.header === '2' ? <HeaderBg num="1" /> : <HeaderBg />}
       <HStack justifyContent={justifyContentStyle} alignItems="center" px="3">
-        {screenInfo?.name !== 'login' && screenInfo?.name !== 'register' && (
+        {screenInfo.header === '1' && (
           <Pressable onPress={() => navigation.openDrawer()}>
             <HamburgerIcon size="7" color="white" />
+          </Pressable>
+        )}
+        {screenInfo.header === '2' && (
+          <Pressable>
+            <ChevronLeftIcon size="6" color="white" />
           </Pressable>
         )}
         <Image
           source={require('../assets/imgs/icon_app.png')}
           style={{width: width * 0.15, height: width * 0.15}}
         />
-        {screenInfo?.name !== 'login' && screenInfo?.name !== 'register' && (
+        {screenInfo.header !== '0' && (
           <Menu
             trigger={triggerProps => {
               return (
@@ -139,8 +141,8 @@ export const Header = props => {
         )}
       </HStack>
       <VStack alignItems="center">
-        <Text style={styles.title}>{screenInfo?.title}</Text>
-        <Text style={styles.subtitle}>{screenInfo?.subTitle}</Text>
+        <Text style={styles.title}>{screenInfo.title}</Text>
+        <Text style={styles.subtitle}>{screenInfo.subTitle}</Text>
       </VStack>
     </View>
   );
@@ -158,10 +160,4 @@ const styles = StyleSheet.create({
     fontFamily: 'CenturyGothic',
     color: 'white',
   },
-  headerBg: (width, height) => ({
-    position: 'absolute',
-    height: Math.round(height * 0.21),
-    width: width,
-    top: -10,
-  }),
 });

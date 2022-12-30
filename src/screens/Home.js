@@ -18,7 +18,8 @@ export const Home = () => {
   const screenInfo = {
     title: 'Empathicos',
     subTitle: 'Discover Your Magic',
-    name: 'home',
+    header: '1',
+    footer: '0',
   };
 
   useEffect(() => {

@@ -9,9 +9,9 @@ import {
   Text,
   KeyboardAvoidingView,
 } from 'native-base';
-import {Layout} from '../components/Layout';
-import {FormBtn} from '../components/FormBtn';
-import {FormInput} from '../components/FormInput';
+import {Layout} from '../../components/Layout';
+import {FormBtn} from '../../components/FormBtn';
+import {FormInput} from '../../components/FormInput';
 
 export const Invite = () => {
   const {height, width} = useWindowDimensions();
@@ -19,7 +19,8 @@ export const Invite = () => {
   const screenInfo = {
     title: 'Invite Friends',
     subTitle: '',
-    name: 'invite_friend',
+    header: '1',
+    footer: '0',
   };
 
   const [loading, setLoading] = useState(true);

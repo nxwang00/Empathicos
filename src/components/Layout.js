@@ -12,7 +12,7 @@ export const Layout = props => {
         style={styles.image}>
         <Header screenInfo={props.screenInfo} />
         {props.children}
-        <Footer />
+        <Footer type={props.screenInfo.footer} />
       </ImageBackground>
     </SafeAreaView>
   );

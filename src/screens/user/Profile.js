@@ -11,18 +11,19 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {format} from 'date-fns';
 import Toast from 'react-native-toast-message';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {useUser} from '../context/User';
-import {Layout} from '../components/Layout';
-import {FormBtn} from '../components/FormBtn';
-import {FormInput} from '../components/FormInput';
-import {FormTextArea} from '../components/FormTextArea';
-import {baseUrl} from '../utils/util';
+import {useUser} from '../../context/User';
+import {Layout} from '../../components/Layout';
+import {FormBtn} from '../../components/FormBtn';
+import {FormInput} from '../../components/FormInput';
+import {FormTextArea} from '../../components/FormTextArea';
+import {baseUrl} from '../../utils/util';
 
 export const Profile = () => {
   const screenInfo = {
     title: 'Profile',
     subTitle: '',
-    name: 'profie',
+    header: '1',
+    footer: '0',
   };
 
   const {height, width} = useWindowDimensions();
@@ -53,7 +54,7 @@ export const Profile = () => {
     />
   ) : (
     <Image
-      source={require('../assets/imgs/icon_profile.png')}
+      source={require('../../assets/imgs/icon_profile.png')}
       style={{width: width * 0.2, height: width * 0.2}}
     />
   );

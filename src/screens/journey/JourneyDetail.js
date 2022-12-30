@@ -3,10 +3,10 @@ import {Image, useWindowDimensions, ActivityIndicator} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Center, View, Text, HStack, Pressable, Icon} from 'native-base';
 import Toast from 'react-native-toast-message';
-import {baseUrl} from '../utils/util';
-import {useUser} from '../context/User';
-import {Layout} from '../components/Layout';
-import {FormBtn} from '../components/FormBtn';
+import {baseUrl} from '../../utils/util';
+import {useUser} from '../../context/User';
+import {Layout} from '../../components/Layout';
+import {FormBtn} from '../../components/FormBtn';
 
 export const JourneyDetail = props => {
   const detail = props.route.params.journey;
@@ -18,7 +18,8 @@ export const JourneyDetail = props => {
   const screenInfo = {
     title: 'Journey',
     subTitle: '',
-    name: 'journey detail',
+    header: '1',
+    footer: '0',
   };
 
   const {height, width} = useWindowDimensions();
@@ -29,7 +30,11 @@ export const JourneyDetail = props => {
   const [showStatus, setShowStatus] = useState('thumbnail');
   const [favoriteStatus, setFavoriteStatus] = useState(detailObj.favorite);
 
-  const onToJourneyPress = () => {};
+  const onToJourneyPress = id => {
+    props.navigation.navigate('journey_go', {
+      id: id,
+    });
+  };
 
   const onListViewPress = () => {
     setShowStatus('listview');
@@ -89,12 +94,12 @@ export const JourneyDetail = props => {
             <Pressable onPress={onListViewPress}>
               {showStatus === 'listview' ? (
                 <Image
-                  source={require('../assets/imgs/btn_listview_press.png')}
+                  source={require('../../assets/imgs/btn_listview_press.png')}
                   style={{width: 40, height: 30, resizeMode: 'contain'}}
                 />
               ) : (
                 <Image
-                  source={require('../assets/imgs/btn_listview.png')}
+                  source={require('../../assets/imgs/btn_listview.png')}
                   style={{width: 40, height: 30, resizeMode: 'contain'}}
                 />
               )}
@@ -102,12 +107,12 @@ export const JourneyDetail = props => {
             <Pressable onPress={onThumbnailPress}>
               {showStatus === 'thumbnail' ? (
                 <Image
-                  source={require('../assets/imgs/btn_thumnailview_press.png')}
+                  source={require('../../assets/imgs/btn_thumnailview_press.png')}
                   style={{width: 40, height: 30, resizeMode: 'contain'}}
                 />
               ) : (
                 <Image
-                  source={require('../assets/imgs/btn_thumnailview.png')}
+                  source={require('../../assets/imgs/btn_thumnailview.png')}
                   style={{width: 40, height: 30, resizeMode: 'contain'}}
                 />
               )}
@@ -124,7 +129,7 @@ export const JourneyDetail = props => {
               </Text>
               <View>
                 <Image
-                  source={require('../assets/imgs/image_slider_border.png')}
+                  source={require('../../assets/imgs/image_slider_border.png')}
                   style={{
                     width: width * 0.55,
                     height: width * 0.45,
@@ -218,7 +223,7 @@ export const JourneyDetail = props => {
           <View mt="4">
             <FormBtn
               title="Go to your Journey"
-              onBtnPress={() => onToJourneyPress()}
+              onBtnPress={() => onToJourneyPress(detailObj.id)}
             />
           </View>
         </Center>

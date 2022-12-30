@@ -8,15 +8,16 @@ import {
 } from 'react-native';
 import {Center, View, Text} from 'native-base';
 import Toast from 'react-native-toast-message';
-import {baseUrl} from '../utils/util';
-import {useUser} from '../context/User';
-import {Layout} from '../components/Layout';
+import {baseUrl} from '../../utils/util';
+import {useUser} from '../../context/User';
+import {Layout} from '../../components/Layout';
 
 export const Journey = props => {
   const screenInfo = {
     title: 'Journeys',
     subTitle: '',
-    name: 'journeys',
+    header: '1',
+    footer: '0',
   };
 
   const {height, width} = useWindowDimensions();
@@ -71,7 +72,7 @@ export const Journey = props => {
       style={{margin: 6}}
       onPress={() => onJourneyItemPress(item)}>
       <Image
-        source={require('../assets/imgs/image_slider_border.png')}
+        source={require('../../assets/imgs/image_slider_border.png')}
         style={{
           width: (width - 70) / 3,
           height: (width - 80) / 3,

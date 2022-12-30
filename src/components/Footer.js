@@ -1,17 +1,32 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Image, useWindowDimensions} from 'react-native';
 
-export const Footer = () => {
+export const Footer = props => {
   const {height, width} = useWindowDimensions();
 
-  return (
-    <View style={styles.footer}>
+  let footerEle = (
+    <Image
+      source={require('../assets/imgs/footer_home_bg.png')}
+      style={[styles.footerBg(width, height)]}
+    />
+  );
+
+  if (props.type === '1') {
+    footerEle = (
       <Image
-        source={require('../assets/imgs/footer_home_bg.png')}
+        source={require('../assets/imgs/footer_bg.png')}
         style={[styles.footerBg(width, height)]}
       />
-    </View>
-  );
+    );
+  } else if (props.type === '2') {
+    footerEle = (
+      <Image
+        source={require('../assets/imgs/new_footer_2.png')}
+        style={[styles.footerBg(width, height)]}
+      />
+    );
+  }
+  return <View style={styles.footer}>{footerEle}</View>;
 };
 
 const styles = StyleSheet.create({

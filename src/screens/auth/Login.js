@@ -1,42 +1,42 @@
 import React, {useState, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/core';
-import {Image, useWindowDimensions, StyleSheet} from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import {
   Center,
   View,
   ScrollView,
-  FormControl,
-  TextArea,
+  Pressable,
   Text,
   KeyboardAvoidingView,
-  Pressable,
 } from 'native-base';
-import {useUser} from '../context/User';
-import {Layout} from '../components/Layout';
-import {FormBtn} from '../components/FormBtn';
-import {FormInput} from '../components/FormInput';
-import {baseUrl} from '../utils/util';
+import {useUser} from '../../context/User';
+import {Layout} from '../../components/Layout';
+import {FormBtn} from '../../components/FormBtn';
+import {FormInput} from '../../components/FormInput';
+import {baseUrl} from '../../utils/util';
 
-export const Register = () => {
+export const Login = () => {
   const screenInfo = {
     title: 'Empathicos',
     subTitle: '',
-    name: 'register',
+    header: '0',
+    footer: '0',
   };
-  const navigation = useNavigation();
+
   const {height, width} = useWindowDimensions();
+
+  const navigation = useNavigation();
 
   const user = useUser();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmpassword, setConfirmPassword] = useState('');
   const [emailErr, setEmailErr] = useState('');
   const [PasswordErr, setPasswordErr] = useState('');
 
-  const onRegister = async () => {
+  const onLogin = async () => {
     if (!email) {
       setEmailErr('Email is required.');
       return;
@@ -53,9 +53,7 @@ export const Register = () => {
       return;
     }
 
-    if (PasswordErr !== '') return;
-
-    const url = `${baseUrl}/auth/register`;
+    const url = `${baseUrl}/auth/signin`;
     var options = {
       method: 'POST',
       headers: {
@@ -94,25 +92,12 @@ export const Register = () => {
   };
 
   const onPasswordChanged = txt => {
-    if (txt !== confirmpassword) {
-      setPasswordErr('Not matched confirmed password.');
-    } else {
-      setPasswordErr('');
-    }
+    setPasswordErr('');
     setPassword(txt);
   };
 
-  const onConfirmPasswordChanged = txt => {
-    if (password !== txt) {
-      setPasswordErr('Not matched confirmed password.');
-    } else {
-      setPasswordErr('');
-    }
-    setConfirmPassword(txt);
-  };
-
-  const onLoginPress = () => {
-    navigation.navigate('login');
+  const onRegisterPress = () => {
+    navigation.navigate('register');
   };
 
   return (
@@ -137,7 +122,7 @@ export const Register = () => {
                 fontWeight="700"
                 fontSize="2xl"
                 textAlign="center">
-                Register
+                Login
               </Text>
               <FormInput
                 mt="2"
@@ -155,28 +140,21 @@ export const Register = () => {
                 value={password}
                 onChange={txt => onPasswordChanged(txt)}
               />
-              <FormInput
-                mt="4"
-                label="Confirm Password"
-                isRequired={false}
-                value={confirmpassword}
-                onChange={txt => onConfirmPasswordChanged(txt)}
-              />
               <View mt="8">
                 <FormBtn
-                  title="Register"
-                  onBtnPress={() => onRegister()}
+                  title="Login"
+                  onBtnPress={() => onLogin()}
                   loading={loading}
                 />
               </View>
-              <View mt="3" mb="5">
-                <Pressable onPress={onLoginPress}>
+              <View mt="3">
+                <Pressable onPress={onRegisterPress}>
                   <Text
                     color="pink.700"
                     fontFamily="CenturyGothic"
                     fontSize="lg"
                     fontWeight="bold">
-                    Login
+                    Register
                   </Text>
                 </Pressable>
               </View>

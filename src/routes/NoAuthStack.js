@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Login} from '../screens/Login';
-import {Register} from '../screens/Register';
+import {Login} from '../screens/auth/Login';
+import {Register} from '../screens/auth/Register';
 
 const Stack = createNativeStackNavigator();
 // const Drawer = createDrawerNavigator();
