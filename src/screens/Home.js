@@ -73,7 +73,11 @@ export const Home = () => {
           <View mt="9" zIndex={1}>
             <VStack space={4} pb="5">
               {menus.map(menu => (
-                <EmpaBtn title={menu.title} key={menu.id} />
+                <EmpaBtn
+                  title={menu.title}
+                  key={menu.id}
+                  info={menu.description}
+                />
               ))}
             </VStack>
             <Center>

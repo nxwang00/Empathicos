@@ -29,12 +29,12 @@ const App = () => {
   return (
     <GlobalProvider>
       <UserProvider>
-        <WithSplashScreen isAppReady={isAppReady}>
-          <NativeBaseProvider>
+        <NativeBaseProvider>
+          <WithSplashScreen isAppReady={isAppReady}>
             <Router />
             <Toast />
-          </NativeBaseProvider>
-        </WithSplashScreen>
+          </WithSplashScreen>
+        </NativeBaseProvider>
       </UserProvider>
     </GlobalProvider>
   );

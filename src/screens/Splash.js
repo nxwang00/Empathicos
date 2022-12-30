@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, StyleSheet} from 'react-native';
+import {Animated, StyleSheet, View} from 'react-native';
+import {Center} from 'native-base';
 
 export function WithSplashScreen({children, isAppReady}) {
   return (
@@ -62,24 +63,58 @@ export const Splash = ({isAppReady}) => {
     <Animated.View
       collapsable={false}
       style={[style.container, {opacity: containerOpacity}]}>
-      <Animated.Image
-        source={require('../assets/imgs/icon_andreea.png')}
-        fadeDuration={0}
-        onLoad={() => {
-          setState(FADE_IN_IMAGE);
-        }}
-        style={[style.image, {opacity: imageOpacity}]}
-        resizeMode="contain"
-      />
-      <Animated.Image
-        source={require('../assets/imgs/title_andreea.png')}
-        fadeDuration={0}
-        onLoad={() => {
-          setState(FADE_IN_IMAGE);
-        }}
-        style={[style.image, {opacity: imageOpacity}]}
-        resizeMode="contain"
-      />
+      <Center>
+        <Animated.Image
+          source={require('../assets/imgs/icon_andreea.png')}
+          fadeDuration={0}
+          onLoad={() => {
+            setState(FADE_IN_IMAGE);
+          }}
+          style={[style.image, {opacity: imageOpacity}]}
+          resizeMode="contain"
+        />
+        <Animated.Text
+          fadeDuration={0}
+          onLoad={() => {
+            setState(FADE_IN_IMAGE);
+          }}
+          style={{
+            opacity: imageOpacity,
+            color: 'white',
+            fontFamily: 'CenturyGothic',
+            fontSize: 40,
+          }}>
+          Empathicos
+        </Animated.Text>
+        <Animated.Text
+          fadeDuration={0}
+          onLoad={() => {
+            setState(FADE_IN_IMAGE);
+          }}
+          style={{
+            opacity: imageOpacity,
+            color: 'white',
+            fontFamily: 'CenturyGothic',
+            fontSize: 24,
+          }}>
+          Discover Your Magic!
+        </Animated.Text>
+      </Center>
+      <Center>
+        <Animated.Text
+          fadeDuration={0}
+          onLoad={() => {
+            setState(FADE_IN_IMAGE);
+          }}
+          style={{
+            opacity: imageOpacity,
+            color: 'white',
+            fontFamily: 'CenturyGothic',
+            fontSize: 32,
+          }}>
+          LET'S GO
+        </Animated.Text>
+      </Center>
     </Animated.View>
   );
 };
@@ -88,11 +123,10 @@ const style = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#b24097',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   image: {
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
   },
 });
