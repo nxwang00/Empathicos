@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Home} from '../screens/Home';
 import {Profile} from '../screens/user/Profile';
 import {Invite} from '../screens/user/Invite';
+import {Favorite} from '../screens/user/Favorite';
 import {Journey} from '../screens/journey/Journey';
 import {JourneyDetail} from '../screens/journey/JourneyDetail';
 import {JourneyGo} from '../screens/journey/JourneyGo';
@@ -29,6 +30,7 @@ export const AuthStack = () => {
       <Drawer.Screen name="journey" component={Journey} />
       <Drawer.Screen name="journey_detail" component={JourneyDetail} />
       <Drawer.Screen name="journey_go" component={JourneyGo} />
+      <Drawer.Screen name="favorite" component={Favorite} />
     </Drawer.Navigator>
   );
 };

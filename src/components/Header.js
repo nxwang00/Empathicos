@@ -28,18 +28,6 @@ export const Header = props => {
 
   const [loading, setLoading] = useState(false);
 
-  const onProfileMenuPress = () => {
-    navigation.navigate('profile');
-  };
-
-  const onInviteMenuPress = () => {
-    navigation.navigate('invite');
-  };
-
-  const onJourneysMenuPress = () => {
-    navigation.navigate('journey');
-  };
-
   const onGoBackScreen = () => {
     navigation.goBack();
   };
@@ -118,22 +106,22 @@ export const Header = props => {
             <AvatarMenuItem
               title="My Profie"
               icon="account"
-              onItemPress={onProfileMenuPress}
+              onItemPress={() => navigation.navigate('profile')}
             />
             <AvatarMenuItem
               title="Invite Friends"
               icon="account-multiple"
-              onItemPress={onInviteMenuPress}
+              onItemPress={() => navigation.navigate('invite')}
             />
             <AvatarMenuItem
               title="Journeys"
               icon="seal"
-              onItemPress={onJourneysMenuPress}
+              onItemPress={() => navigation.navigate('journey')}
             />
             <AvatarMenuItem
               title="Favorites"
               icon="heart"
-              onItemPress={() => console.log('click favorites')}
+              onItemPress={() => navigation.navigate('favorite')}
             />
             <Divider mt="2" w="100%" />
             <AvatarMenuItem

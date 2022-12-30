@@ -61,16 +61,16 @@ export const Journey = props => {
     }
   };
 
-  const onJourneyItemPress = journey => {
+  const onJourneyItemPress = id => {
     props.navigation.navigate('journey_detail', {
-      journey: JSON.stringify(journey),
+      id: id,
     });
   };
 
   const badgeItem = ({item}) => (
     <TouchableOpacity
       style={{margin: 6}}
-      onPress={() => onJourneyItemPress(item)}>
+      onPress={() => onJourneyItemPress(item.id)}>
       <Image
         source={require('../../assets/imgs/image_slider_border.png')}
         style={{

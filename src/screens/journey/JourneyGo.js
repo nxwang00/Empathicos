@@ -13,7 +13,7 @@ export const JourneyGo = props => {
   const {height, width} = useWindowDimensions();
 
   const screenInfo = {
-    title: 'Journey',
+    title: 'Go to journey',
     subTitle: '',
     header: '3',
     footer: '2',
