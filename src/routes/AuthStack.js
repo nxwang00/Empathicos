@@ -22,7 +22,7 @@ import {Favorite} from '../screens/user/Favorite';
 import {Journey} from '../screens/journey/Journey';
 import {JourneyDetail} from '../screens/journey/JourneyDetail';
 import {JourneyGo} from '../screens/journey/JourneyGo';
-import {SoulVision} from '../screens/home/SoulVision';
+import {SoulVision} from '../screens/soulvision/Main';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
