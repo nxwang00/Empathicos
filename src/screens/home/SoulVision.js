@@ -1,34 +1,35 @@
 import React, {useState, useEffect} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {Image, ActivityIndicator} from 'react-native';
-import {Center, VStack, Pressable, View} from 'native-base';
+import {Image, ActivityIndicator, useWindowDimensions} from 'react-native';
+import {Center, VStack, Pressable, View, Box} from 'native-base';
 import Toast from 'react-native-toast-message';
-import {baseUrl} from '../utils/util';
-import {useUser} from '../context/User';
-import {Layout} from '../components/Layout';
-import {EmpaBtn} from '../components/EmpaBtn';
-import {FormBtn} from '../components/FormBtn';
+import {baseUrl} from '../../utils/util';
+import {useUser} from '../../context/User';
+import {Layout} from '../../components/Layout';
+import {EmpaBtn} from '../../components/EmpaBtn';
+import {FormBtn} from '../../components/FormBtn';
 
-export const Home = props => {
+export const SoulVision = props => {
+  const id = props.route.params.id;
+  const {height, width} = useWindowDimensions();
   const {userData} = useUser();
 
   const [loading, setLoading] = useState(true);
   const [menus, setMenus] = useState([]);
 
   const screenInfo = {
-    title: 'Empathicos',
-    subTitle: 'Discover Your Magic',
-    header: '1',
-    footer: '0',
+    title: 'Soul Vision',
+    subTitle: '',
+    header: '2',
+    footer: '1',
   };
 
   useEffect(() => {
-    getHomeMenus();
+    getSubCategoryMenus();
   }, []);
 
-  const getHomeMenus = async () => {
+  const getSubCategoryMenus = async () => {
     const token = userData.access_token;
-    const url = `${baseUrl}/dashboard-category`;
+    const url = `${baseUrl}/dashboard-subcategory/${id}`;
     var options = {
       headers: {
         Accept: 'application/json',
@@ -56,16 +57,6 @@ export const Home = props => {
     }
   };
 
-  const onEnter = () => {
-    console.log('click enter');
-  };
-
-  const onEmpaBtnPress = id => {
-    props.navigation.navigate('soul_vision', {
-      id: id,
-    });
-  };
-
   return (
     <>
       <Layout screenInfo={screenInfo}>
@@ -76,24 +67,16 @@ export const Home = props => {
             style={{marginTop: '50%'}}
           />
         ) : (
-          <View mt="9" zIndex={1}>
-            <VStack space={4} pb="5">
+          <View zIndex={1} style={{marginTop: height * 0.2}}>
+            <VStack space={20} pb="5">
               {menus.map(menu => (
                 <EmpaBtn
                   title={menu.title}
                   key={menu.id}
                   info={menu.description}
-                  onBtnPress={() => onEmpaBtnPress(menu.id)}
                 />
               ))}
             </VStack>
-            <Center>
-              <Image
-                source={require('../assets/imgs/image_doorway.png')}
-                style={{width: 200, height: 140, resizeMode: 'stretch'}}
-              />
-              <FormBtn title="Enter" onBtnPress={onEnter} />
-            </Center>
           </View>
         )}
       </Layout>

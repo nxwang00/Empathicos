@@ -11,7 +11,7 @@ import {
 import {StyleSheet, Image, useWindowDimensions} from 'react-native';
 
 export const EmpaBtn = props => {
-  const {title, info} = props;
+  const {title, info, onBtnPress} = props;
   const {height, width} = useWindowDimensions();
   const regex = /(<([^>]+)>)/gi;
 
@@ -19,7 +19,7 @@ export const EmpaBtn = props => {
 
   return (
     <>
-      <Pressable alignItems="center">
+      <Pressable alignItems="center" onPress={onBtnPress}>
         <Center>
           <Image
             source={require('../assets/imgs/rectangle_btn.png')}

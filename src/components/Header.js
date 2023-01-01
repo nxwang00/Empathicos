@@ -80,10 +80,12 @@ export const Header = props => {
             <ChevronLeftIcon size="6" color="white" />
           </Pressable>
         )}
-        <Image
-          source={require('../assets/imgs/icon_app.png')}
-          style={{width: width * 0.15, height: width * 0.15}}
-        />
+        <Pressable onPress={() => navigation.navigate('home')}>
+          <Image
+            source={require('../assets/imgs/icon_app.png')}
+            style={{width: width * 0.15, height: width * 0.15}}
+          />
+        </Pressable>
         {screenInfo.header !== '0' && (
           <Menu
             trigger={triggerProps => {
