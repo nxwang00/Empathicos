@@ -8,7 +8,7 @@ export const Footer = props => {
   let footerEle = (
     <Image
       source={require('../assets/imgs/footer_home_bg.png')}
-      style={[styles.footerBg(width, height)]}
+      style={[styles.footerBg(width, height, 0.33)]}
     />
   );
 
@@ -17,7 +17,7 @@ export const Footer = props => {
       <>
         <Image
           source={require('../assets/imgs/footer_bg.png')}
-          style={[styles.footerBg(width, height)]}
+          style={[styles.footerBg(width, height, 0.3)]}
         />
         <HStack
           space="3"
@@ -44,7 +44,7 @@ export const Footer = props => {
     footerEle = (
       <Image
         source={require('../assets/imgs/new_footer_2.png')}
-        style={[styles.footerBg(width, height)]}
+        style={[styles.footerBg(width, height, 0.33)]}
       />
     );
   }
@@ -52,9 +52,9 @@ export const Footer = props => {
 };
 
 const styles = StyleSheet.create({
-  footerBg: (width, height) => ({
+  footerBg: (width, height, per) => ({
     position: 'absolute',
-    height: Math.round(height * 0.33),
+    height: Math.round(height * per),
     width: width,
     bottom: -60,
   }),

@@ -23,6 +23,9 @@ import {Journey} from '../screens/journey/Journey';
 import {JourneyDetail} from '../screens/journey/JourneyDetail';
 import {JourneyGo} from '../screens/journey/JourneyGo';
 import {SoulVision} from '../screens/soulvision/Main';
+import {AudioCourses} from '../screens/soulvision/AudioCourses';
+import {AudioCourse} from '../screens/soulvision/AudioCourse';
+import {Journeys} from '../screens/soulvision/Journeys';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -177,6 +180,27 @@ export const AuthStack = () => {
       <Drawer.Screen
         name="soul_vision"
         component={SoulVision}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="audio_courses"
+        component={AudioCourses}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="audio_course"
+        component={AudioCourse}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="journeys"
+        component={Journeys}
         options={{
           drawerItemStyle: {display: 'none'},
         }}

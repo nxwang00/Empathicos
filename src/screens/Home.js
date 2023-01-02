@@ -84,6 +84,9 @@ export const Home = props => {
                   key={menu.id}
                   info={menu.description}
                   onBtnPress={() => onEmpaBtnPress(menu.id)}
+                  ht={35}
+                  textMT={-8}
+                  iconMT={-22}
                 />
               ))}
             </VStack>

@@ -5,11 +5,10 @@ import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
-import {EmpaBtn} from '../../components/EmpaBtn';
+import {EmpaPlainBtn} from '../../components/EmpaPlainBtn';
 import {FormBtn} from '../../components/FormBtn';
 
-export const SoulVision = props => {
-  const id = props.route.params.id;
+export const Journeys = props => {
   const {height, width} = useWindowDimensions();
   const {userData} = useUser();
 
@@ -17,19 +16,19 @@ export const SoulVision = props => {
   const [menus, setMenus] = useState([]);
 
   const screenInfo = {
-    title: 'Soul Vision',
+    title: 'Journeys',
     subTitle: '',
     header: '2',
     footer: '1',
   };
 
   useEffect(() => {
-    getSubCategoryMenus();
+    getSubMenus();
   }, []);
 
-  const getSubCategoryMenus = async () => {
+  const getSubMenus = async () => {
     const token = userData.access_token;
-    const url = `${baseUrl}/dashboard-subcategory/${id}`;
+    const url = `${baseUrl}`;
     var options = {
       headers: {
         Accept: 'application/json',
@@ -45,6 +44,7 @@ export const SoulVision = props => {
           text1: resResult.message,
         });
       } else {
+        console.log(resResult.results);
         setMenus(resResult.results);
       }
     } catch (err) {
@@ -54,19 +54,6 @@ export const SoulVision = props => {
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const onEmpaBtnPress = id => {
-    const targetMenu = menus.find(menu => menu.id === id);
-    const title = targetMenu.title;
-    switch (title) {
-      case 'Journeys':
-        props.navigation.navigate('journeys');
-        break;
-      case 'Audio Courses':
-        props.navigation.navigate('audio_courses');
-        break;
     }
   };
 
@@ -80,17 +67,14 @@ export const SoulVision = props => {
             style={{marginTop: '50%'}}
           />
         ) : (
-          <View zIndex={1} style={{marginTop: height * 0.2}}>
-            <VStack space={20} pb="5">
+          <View zIndex={1} style={{marginTop: height * 0.05}}>
+            <VStack space={4}>
               {menus.map(menu => (
-                <EmpaBtn
-                  title={menu.title}
+                <EmpaPlainBtn
+                  title={menu.name}
                   key={menu.id}
-                  info={menu.description}
-                  onBtnPress={() => onEmpaBtnPress(menu.id)}
-                  ht={45}
+                  ht={39}
                   textMT={-9}
-                  iconMT={-22}
                 />
               ))}
             </VStack>

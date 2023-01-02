@@ -11,8 +11,7 @@ import {
 import {StyleSheet, Image, useWindowDimensions} from 'react-native';
 
 export const EmpaPlainBtn = props => {
-  const {title, onBtnPress} = props;
-  const {height, width} = useWindowDimensions();
+  const {title, onBtnPress, ht, textMT} = props;
 
   return (
     <>
@@ -20,9 +19,9 @@ export const EmpaPlainBtn = props => {
         <Center>
           <Image
             source={require('../assets/imgs/rectangle_btn.png')}
-            style={{width: 235, height: 35, resizeMode: 'stretch'}}
+            style={{width: 235, height: ht, resizeMode: 'stretch'}}
           />
-          <Text fontSize="lg" color="white" style={styles.btn} mt={-8}>
+          <Text fontSize="lg" color="white" style={styles.btn} mt={textMT}>
             {title}
           </Text>
         </Center>

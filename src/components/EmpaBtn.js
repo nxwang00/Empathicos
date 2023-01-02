@@ -11,7 +11,7 @@ import {
 import {StyleSheet, Image, useWindowDimensions} from 'react-native';
 
 export const EmpaBtn = props => {
-  const {title, info, onBtnPress} = props;
+  const {title, info, onBtnPress, ht, textMT, iconMT} = props;
   const {height, width} = useWindowDimensions();
   const regex = /(<([^>]+)>)/gi;
 
@@ -23,14 +23,15 @@ export const EmpaBtn = props => {
         <Center>
           <Image
             source={require('../assets/imgs/rectangle_btn.png')}
-            style={{width: 235, height: 35, resizeMode: 'stretch'}}
+            style={{width: 235, height: ht, resizeMode: 'stretch'}}
           />
-          <Text fontSize="lg" color="white" style={styles.btn} mt={-8}>
+          <Text fontSize="lg" color="white" style={styles.btn} mt={textMT}>
             {title}
           </Text>
           <WarningOutlineIcon
             color="amber.300"
             style={styles.warningIcon}
+            mt={iconMT}
             onPress={() => setShowInfoModal(true)}
           />
         </Center>
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   warningIcon: {
-    marginTop: -22,
     marginRight: 10,
     alignSelf: 'flex-end',
   },
