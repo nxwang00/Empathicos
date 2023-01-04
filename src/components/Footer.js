@@ -17,7 +17,7 @@ export const Footer = props => {
       <>
         <Image
           source={require('../assets/imgs/footer_bg.png')}
-          style={[styles.footerBg(width, height, 0.3)]}
+          style={[styles.footerBg(width, height, 0.28)]}
         />
         <HStack
           space="3"

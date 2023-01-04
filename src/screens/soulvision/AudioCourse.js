@@ -1,40 +1,43 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Image,
   ActivityIndicator,
   useWindowDimensions,
   Animated,
 } from 'react-native';
-import {View} from 'native-base';
-import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
+import {View, HStack, Button, Icon} from 'native-base';
 import Toast from 'react-native-toast-message';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
 import {Course} from './components/Course';
-import {EmpaPlainBtn} from '../../components/EmpaPlainBtn';
-import {FormBtn} from '../../components/FormBtn';
 
 export const AudioCourse = props => {
   const id = props.route.params.id;
+  const title = props.route.params.title;
+
+  const scrollViewRef = useRef(null);
   const {height, width} = useWindowDimensions();
   const {userData} = useUser();
 
   const scrollX = new Animated.Value(0);
 
-  const [loading, setLoading] = useState(false);
-  const [courses, setCourses] = useState([]);
-
-  const screenInfo = {
+  const [screenInfo, setScreenInfo] = useState({
     title: 'Audio Course',
     subTitle: '',
     header: '2',
     footer: '1',
-  };
+  });
+  const [loading, setLoading] = useState(true);
+  const [screenIndex, setScreenIndex] = useState(0);
+  const [courses, setCourses] = useState([]);
+  const [nextBtnDisable, setNextBtnDisable] = useState(false);
+  const [backBtnDisable, setBackBtnDisable] = useState(true);
 
   useEffect(() => {
     getCourse();
-  }, []);
+  }, [id]);
 
   const getCourse = async () => {
     const token = userData.access_token;
@@ -54,8 +57,12 @@ export const AudioCourse = props => {
           text1: resResult.message,
         });
       } else {
-        console.log(resResult.results);
+        // console.log(resResult.results);
         setCourses(resResult.results);
+        setScreenInfo({
+          ...screenInfo,
+          ...{title: title, subTitle: resResult.results[0].title},
+        });
       }
     } catch (err) {
       Toast.show({
@@ -65,6 +72,46 @@ export const AudioCourse = props => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const onNextBtnPress = () => {
+    const newScreenIndex = screenIndex + 1;
+    setScreenInfo({
+      ...screenInfo,
+      ...{subTitle: courses[newScreenIndex].title},
+    });
+
+    scrollViewRef.current?.scrollTo({
+      x: width * newScreenIndex,
+      animated: true,
+    });
+
+    if (newScreenIndex >= courses.length - 1) {
+      setNextBtnDisable(true);
+    }
+    setBackBtnDisable(false);
+
+    setScreenIndex(newScreenIndex);
+  };
+
+  const onBackBtnPress = () => {
+    const newScreenIndex = screenIndex - 1;
+
+    setScreenInfo({
+      ...screenInfo,
+      ...{subTitle: courses[newScreenIndex].title},
+    });
+    scrollViewRef.current?.scrollTo({
+      x: width * newScreenIndex,
+      animated: true,
+    });
+
+    if (newScreenIndex < 1) {
+      setBackBtnDisable(true);
+    }
+    setNextBtnDisable(false);
+
+    setScreenIndex(newScreenIndex);
   };
 
   return (
@@ -79,6 +126,7 @@ export const AudioCourse = props => {
         ) : (
           <View>
             <Animated.ScrollView
+              ref={scrollViewRef}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}>
@@ -91,15 +139,40 @@ export const AudioCourse = props => {
                 />
               ))}
             </Animated.ScrollView>
-            <View mt="4">
-              <RNAnimatedScrollIndicators
-                numberOfCards={courses.length}
-                scrollWidth={width}
-                activeColor={'blue'}
-                inActiveColor={'white'}
-                scrollAnimatedValue={scrollX}
-              />
-            </View>
+            <HStack
+              alignItems="center"
+              justifyContent="space-between"
+              mx="12"
+              mt="4">
+              <Button
+                py="1"
+                bg="#a73d96"
+                isDisabled={backBtnDisable}
+                onPress={onBackBtnPress}
+                leftIcon={
+                  <Icon
+                    as={MaterialCommunityIcons}
+                    name="chevron-left"
+                    size="md"
+                  />
+                }>
+                Back
+              </Button>
+              <Button
+                py="1"
+                bg="#a73d96"
+                isDisabled={nextBtnDisable}
+                onPress={onNextBtnPress}
+                rightIcon={
+                  <Icon
+                    as={MaterialCommunityIcons}
+                    name="chevron-right"
+                    size="md"
+                  />
+                }>
+                Next
+              </Button>
+            </HStack>
           </View>
         )}
       </Layout>

@@ -1,38 +1,86 @@
 import React from 'react';
 import {Image, useWindowDimensions} from 'react-native';
-import {Center, View, Text, ScrollView} from 'native-base';
+import {Center, View, ScrollView, HStack, Icon, Slider} from 'native-base';
+import RenderHtml from 'react-native-render-html';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const Course = props => {
   const {image, description, aduio} = props;
   const {height, width} = useWindowDimensions();
 
+  const onPlayBtnPress = () => {};
+
   return (
-    <ScrollView style={{height: height * 0.5}} mt="8" zIndex="1">
+    <View mt="8" zIndex="1">
       <Center>
         <View>
           <Image
             source={{uri: image}}
             style={{
-              width: width * 0.8,
-              height: width * 0.45,
+              width: width * 0.7,
+              height: height * 0.22,
               borderRadius: 10,
               borderColor: 'white',
               borderWidth: 4,
             }}
           />
         </View>
-        <View style={{width: width}} mt="2">
-          <Text
-            fontFamily="CenturyGothic"
-            fontSize="14"
-            mx="10"
-            p="2"
+        <View style={{width: width}} mt="3">
+          <ScrollView
             bg="primary.100"
-            borderRadius="6">
-            {description}
-          </Text>
+            mx="10"
+            px="3"
+            borderRadius="6"
+            fontFamily="CenturyGothic"
+            style={{height: height * 0.2}}>
+            <RenderHtml contentWidth={width} source={{html: description}} />
+          </ScrollView>
+        </View>
+        <View style={{width: width}} mt="3">
+          <HStack
+            space="3"
+            alignItems="center"
+            justifyContent="flex-start"
+            bg="primary.100"
+            mx="10"
+            px="2"
+            borderRadius="20">
+            <Icon
+              as={MaterialCommunityIcons}
+              name="rewind"
+              onPress={onPlayBtnPress}
+              size="lg"
+              color="primary.600"
+            />
+            <Icon
+              as={MaterialCommunityIcons}
+              name="play"
+              onPress={onPlayBtnPress}
+              size="lg"
+              color="primary.600"
+            />
+            <Icon
+              as={MaterialCommunityIcons}
+              name="fast-forward"
+              onPress={onPlayBtnPress}
+              size="lg"
+              color="primary.600"
+            />
+            <Slider
+              defaultValue={70}
+              minValue={0}
+              maxValue={100}
+              step={10}
+              size="sm"
+              w="3/5">
+              <Slider.Track>
+                <Slider.FilledTrack />
+              </Slider.Track>
+              <Slider.Thumb />
+            </Slider>
+          </HStack>
         </View>
       </Center>
-    </ScrollView>
+    </View>
   );
 };

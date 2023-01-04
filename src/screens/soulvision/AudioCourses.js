@@ -57,7 +57,8 @@ export const AudioCourses = props => {
   };
 
   const onEmpaPlainBtnPress = id => {
-    props.navigation.navigate('audio_course', {id: id});
+    const menuTitle = menus.find(menu => menu.id === id).title;
+    props.navigation.navigate('audio_course', {id: id, title: menuTitle});
   };
 
   return (

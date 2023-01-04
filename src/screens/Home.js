@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {Image, ActivityIndicator} from 'react-native';
 import {Center, VStack, Pressable, View} from 'native-base';
 import Toast from 'react-native-toast-message';
@@ -10,6 +11,7 @@ import {EmpaBtn} from '../components/EmpaBtn';
 import {FormBtn} from '../components/FormBtn';
 
 export const Home = props => {
+  const isFocused = useIsFocused();
   const {userData} = useUser();
 
   const [loading, setLoading] = useState(true);
@@ -24,7 +26,7 @@ export const Home = props => {
 
   useEffect(() => {
     getHomeMenus();
-  }, []);
+  }, [isFocused]);
 
   const getHomeMenus = async () => {
     const token = userData.access_token;
