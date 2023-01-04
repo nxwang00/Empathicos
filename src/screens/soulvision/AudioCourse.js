@@ -5,17 +5,26 @@ import {
   useWindowDimensions,
   Animated,
 } from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 import {View, HStack, Button, Icon} from 'native-base';
 import Toast from 'react-native-toast-message';
+import TrackPlayer, {
+  useTrackPlayerEvents,
+  Event,
+  State,
+  Capability,
+} from 'react-native-track-player';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
 import {Course} from './components/Course';
+import {tr} from 'date-fns/locale';
 
 export const AudioCourse = props => {
   const id = props.route.params.id;
   const title = props.route.params.title;
+  const isFocused = useIsFocused();
 
   const scrollViewRef = useRef(null);
   const {height, width} = useWindowDimensions();
@@ -36,8 +45,13 @@ export const AudioCourse = props => {
   const [backBtnDisable, setBackBtnDisable] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+    setScreenIndex(0);
+    setNextBtnDisable(false);
+    setBackBtnDisable(true);
     getCourse();
-  }, [id]);
+    updateTrackPlayer();
+  }, [id, isFocused]);
 
   const getCourse = async () => {
     const token = userData.access_token;
@@ -57,12 +71,22 @@ export const AudioCourse = props => {
           text1: resResult.message,
         });
       } else {
-        // console.log(resResult.results);
-        setCourses(resResult.results);
+        const courselist = resResult.results;
+        const rst = courselist.map(item => {
+          return {...item, status: 'none', url: item.audio};
+        });
+        setCourses(rst);
+
+        await TrackPlayer.reset();
+        await TrackPlayer.add(rst);
+
         setScreenInfo({
           ...screenInfo,
-          ...{title: title, subTitle: resResult.results[0].title},
+          ...{title: title, subTitle: courselist[0].title},
         });
+        if (courselist.length === 1) {
+          setNextBtnDisable(true);
+        }
       }
     } catch (err) {
       Toast.show({
@@ -74,44 +98,93 @@ export const AudioCourse = props => {
     }
   };
 
-  const onNextBtnPress = () => {
+  const updateTrackPlayer = async () => {
+    try {
+      await TrackPlayer.updateOptions({
+        forwardJumpInterval: 30,
+        jumpInterval: 30,
+        capabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.JumpBackward,
+          Capability.JumpForward,
+        ],
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onNextBtnPress = async () => {
     const newScreenIndex = screenIndex + 1;
-    setScreenInfo({
-      ...screenInfo,
-      ...{subTitle: courses[newScreenIndex].title},
-    });
 
-    scrollViewRef.current?.scrollTo({
-      x: width * newScreenIndex,
-      animated: true,
-    });
-
+    // validation if next course exist
     if (newScreenIndex >= courses.length - 1) {
       setNextBtnDisable(true);
     }
     setBackBtnDisable(false);
 
-    setScreenIndex(newScreenIndex);
-  };
-
-  const onBackBtnPress = () => {
-    const newScreenIndex = screenIndex - 1;
-
+    // upgrade the screen information on header
     setScreenInfo({
       ...screenInfo,
       ...{subTitle: courses[newScreenIndex].title},
     });
+
+    // trigger the screen horizontal scroll
     scrollViewRef.current?.scrollTo({
       x: width * newScreenIndex,
       animated: true,
     });
+
+    // upgrade current track
+    TrackPlayer.pause();
+    await TrackPlayer.skip(newScreenIndex);
+
+    setScreenIndex(newScreenIndex);
+  };
+
+  const onBackBtnPress = async () => {
+    const newScreenIndex = screenIndex - 1;
 
     if (newScreenIndex < 1) {
       setBackBtnDisable(true);
     }
     setNextBtnDisable(false);
 
+    setScreenInfo({
+      ...screenInfo,
+      ...{subTitle: courses[newScreenIndex].title},
+    });
+
+    scrollViewRef.current?.scrollTo({
+      x: width * newScreenIndex,
+      animated: true,
+    });
+
+    TrackPlayer.pause();
+    await TrackPlayer.skip(newScreenIndex);
+
     setScreenIndex(newScreenIndex);
+  };
+
+  const onPlayPause = val => {
+    if (val === 'play') {
+      TrackPlayer.play();
+    } else {
+      TrackPlayer.pause();
+    }
+  };
+
+  const playForwardBackward = async val => {
+    if (val === 'next') {
+      let position = await TrackPlayer.getPosition();
+      let newPosition = position + 10;
+      await TrackPlayer.seekTo(newPosition);
+    } else {
+      let position = await TrackPlayer.getPosition();
+      let newPosition = position > 10 ? position - 10 : 0;
+      await TrackPlayer.seekTo(newPosition);
+    }
   };
 
   return (
@@ -133,9 +206,11 @@ export const AudioCourse = props => {
               {courses.map(course => (
                 <Course
                   key={course.id}
+                  selectedIdx={screenIndex}
                   image={course.image}
                   description={course.description}
-                  audio={course.audio}
+                  onPlayPause={val => onPlayPause(val)}
+                  onForwardBackward={val => playForwardBackward(val)}
                 />
               ))}
             </Animated.ScrollView>

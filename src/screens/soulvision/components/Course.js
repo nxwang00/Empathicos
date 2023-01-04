@@ -1,14 +1,31 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image, useWindowDimensions} from 'react-native';
 import {Center, View, ScrollView, HStack, Icon, Slider} from 'native-base';
 import RenderHtml from 'react-native-render-html';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const Course = props => {
-  const {image, description, aduio} = props;
+  const {selectedIdx, image, description, onPlayPause, onForwardBackward} =
+    props;
   const {height, width} = useWindowDimensions();
 
-  const onPlayBtnPress = () => {};
+  const [isPlaying, setPlaying] = useState('none');
+
+  useEffect(() => {
+    setPlaying('none');
+  }, [selectedIdx]);
+
+  const onPlayPausePress = async () => {
+    if (isPlaying === 'playing') {
+      onPlayPause('none');
+      setPlaying('none');
+    } else {
+      onPlayPause('play');
+      setPlaying('playing');
+    }
+  };
+
+  const playPauseIcon = isPlaying === 'playing' ? 'pause' : 'play';
 
   return (
     <View mt="8" zIndex="1">
@@ -48,21 +65,21 @@ export const Course = props => {
             <Icon
               as={MaterialCommunityIcons}
               name="rewind"
-              onPress={onPlayBtnPress}
+              onPress={() => onForwardBackward('prev')}
               size="lg"
               color="primary.600"
             />
             <Icon
               as={MaterialCommunityIcons}
-              name="play"
-              onPress={onPlayBtnPress}
+              name={playPauseIcon}
+              onPress={onPlayPausePress}
               size="lg"
               color="primary.600"
             />
             <Icon
               as={MaterialCommunityIcons}
               name="fast-forward"
-              onPress={onPlayBtnPress}
+              onPress={() => onForwardBackward('next')}
               size="lg"
               color="primary.600"
             />
