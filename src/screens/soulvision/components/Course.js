@@ -5,27 +5,35 @@ import RenderHtml from 'react-native-render-html';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const Course = props => {
-  const {selectedIdx, image, description, onPlayPause, onForwardBackward} =
-    props;
+  const {
+    selectedIdx,
+    image,
+    description,
+    onPlayPause,
+    onForwardBackward,
+    position,
+    duration,
+    onPositionChange,
+    status,
+  } = props;
   const {height, width} = useWindowDimensions();
 
-  const [isPlaying, setPlaying] = useState('none');
+  // const [isPlaying, setPlaying] = useState('none');
 
-  useEffect(() => {
-    setPlaying('none');
-  }, [selectedIdx]);
+  // useEffect(() => {
+  // setPlaying('none');
+  // setSliderMaxValue(duration);
+  // }, [selectedIdx]);
 
   const onPlayPausePress = async () => {
-    if (isPlaying === 'playing') {
+    if (status === 'playing') {
       onPlayPause('none');
-      setPlaying('none');
     } else {
       onPlayPause('play');
-      setPlaying('playing');
     }
   };
 
-  const playPauseIcon = isPlaying === 'playing' ? 'pause' : 'play';
+  const playPauseIcon = status === 'playing' ? 'pause' : 'play';
 
   return (
     <View mt="8" zIndex="1">
@@ -84,10 +92,9 @@ export const Course = props => {
               color="primary.600"
             />
             <Slider
-              defaultValue={70}
-              minValue={0}
-              maxValue={100}
-              step={10}
+              value={position}
+              maxValue={duration}
+              onChange={val => onPositionChange(val)}
               size="sm"
               w="3/5">
               <Slider.Track>

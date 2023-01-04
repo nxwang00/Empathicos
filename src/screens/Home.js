@@ -63,9 +63,19 @@ export const Home = props => {
   };
 
   const onEmpaBtnPress = id => {
-    props.navigation.navigate('soul_vision', {
-      id: id,
-    });
+    const selectedMenuTitle = menus.find(menu => menu.id === id).title;
+    switch (selectedMenuTitle) {
+      case 'Soul Vision':
+        props.navigation.navigate('soul_vision', {
+          id: id,
+        });
+        break;
+      case 'Inner Peace':
+        props.navigation.navigate('inner_peace', {
+          id: id,
+        });
+        break;
+    }
   };
 
   return (

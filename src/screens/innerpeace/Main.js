@@ -5,10 +5,11 @@ import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
-import {EmpaPlainBtn} from '../../components/EmpaPlainBtn';
+import {EmpaBtn} from '../../components/EmpaBtn';
 import {FormBtn} from '../../components/FormBtn';
 
-export const Journeys = props => {
+export const InnerPeace = props => {
+  const id = props.route.params.id;
   const {height, width} = useWindowDimensions();
   const {userData} = useUser();
 
@@ -16,19 +17,19 @@ export const Journeys = props => {
   const [menus, setMenus] = useState([]);
 
   const screenInfo = {
-    title: 'Journeys',
+    title: 'Soul Vision',
     subTitle: '',
     header: '2',
     footer: '1',
   };
 
   useEffect(() => {
-    getSubMenus();
+    getSubCategoryMenus();
   }, []);
 
-  const getSubMenus = async () => {
+  const getSubCategoryMenus = async () => {
     const token = userData.access_token;
-    const url = `${baseUrl}`;
+    const url = `${baseUrl}/dashboard-subcategory/${id}`;
     var options = {
       headers: {
         Accept: 'application/json',
@@ -56,6 +57,19 @@ export const Journeys = props => {
     }
   };
 
+  const onEmpaBtnPress = id => {
+    const targetMenu = menus.find(menu => menu.id === id);
+    const title = targetMenu.title;
+    switch (title) {
+      case 'Journeys':
+        props.navigation.navigate('journeys');
+        break;
+      case 'Audio Courses':
+        props.navigation.navigate('audio_courses');
+        break;
+    }
+  };
+
   return (
     <>
       <Layout screenInfo={screenInfo}>
@@ -66,14 +80,17 @@ export const Journeys = props => {
             style={{marginTop: '50%'}}
           />
         ) : (
-          <View zIndex={1} style={{marginTop: height * 0.06}}>
-            <VStack space={4}>
+          <View zIndex={1} style={{marginTop: height * 0.07}}>
+            <VStack space={6} pb="5">
               {menus.map(menu => (
-                <EmpaPlainBtn
-                  title={menu.name}
+                <EmpaBtn
+                  title={menu.title}
                   key={menu.id}
-                  ht={39}
+                  info={menu.description}
+                  onBtnPress={() => onEmpaBtnPress(menu.id)}
+                  ht={45}
                   textMT={-9}
+                  iconMT={-22}
                 />
               ))}
             </VStack>

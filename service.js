@@ -4,12 +4,12 @@ module.exports = async function () {
   TrackPlayer.addEventListener(Event.RemotePause, () => TrackPlayer.pause());
   TrackPlayer.addEventListener(Event.RemoteJumpForward, async event => {
     let position = await TrackPlayer.getPosition();
-    let newPosition = position + 10;
+    let newPosition = position + 20;
     await TrackPlayer.seekTo(newPosition);
   });
   TrackPlayer.addEventListener(Event.RemoteJumpBackward, async event => {
     let position = await TrackPlayer.getPosition();
-    let newPosition = position > 10 ? position - 10 : 0;
+    let newPosition = position > 20 ? position - 20 : 0;
     await TrackPlayer.seekTo(newPosition);
   });
 };

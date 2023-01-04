@@ -26,6 +26,7 @@ import {SoulVision} from '../screens/soulvision/Main';
 import {AudioCourses} from '../screens/soulvision/AudioCourses';
 import {AudioCourse} from '../screens/soulvision/AudioCourse';
 import {Journeys} from '../screens/soulvision/Journeys';
+import {InnerPeace} from '../screens/innerpeace/Main';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -201,6 +202,13 @@ export const AuthStack = () => {
       <Drawer.Screen
         name="journeys"
         component={Journeys}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="inner_peace"
+        component={InnerPeace}
         options={{
           drawerItemStyle: {display: 'none'},
         }}
