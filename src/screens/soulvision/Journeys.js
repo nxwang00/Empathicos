@@ -28,7 +28,7 @@ export const Journeys = props => {
 
   const getSubMenus = async () => {
     const token = userData.access_token;
-    const url = `${baseUrl}`;
+    const url = `${baseUrl}/journeys`;
     var options = {
       headers: {
         Accept: 'application/json',
@@ -56,6 +56,11 @@ export const Journeys = props => {
     }
   };
 
+  const onEmpaPlainBtnPress = id => {
+    const menuTitle = menus.find(menu => menu.id === id).name;
+    props.navigation.navigate('journey_template', {id: id, title: menuTitle});
+  };
+
   return (
     <>
       <Layout screenInfo={screenInfo}>
@@ -74,6 +79,7 @@ export const Journeys = props => {
                   key={menu.id}
                   ht={39}
                   textMT={-9}
+                  onBtnPress={() => onEmpaPlainBtnPress(menu.id)}
                 />
               ))}
             </VStack>

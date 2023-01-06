@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {Image, ActivityIndicator, useWindowDimensions} from 'react-native';
-import {Center, VStack, Pressable, View, Box} from 'native-base';
+import {Center, VStack, Pressable, View, ScrollView} from 'native-base';
 import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
-import {EmpaBtn} from '../../components/EmpaBtn';
+import {EmpaPlainBtn} from '../../components/EmpaPlainBtn';
 import {FormBtn} from '../../components/FormBtn';
 
-export const InnerPeace = props => {
+export const SubMenus = props => {
   const id = props.route.params.id;
+  const title = props.route.params.title;
+
   const {height, width} = useWindowDimensions();
   const {userData} = useUser();
 
@@ -17,15 +19,16 @@ export const InnerPeace = props => {
   const [menus, setMenus] = useState([]);
 
   const screenInfo = {
-    title: 'Soul Vision',
+    title: title,
     subTitle: '',
     header: '2',
     footer: '1',
   };
 
   useEffect(() => {
+    setLoading(true);
     getSubCategoryMenus();
-  }, []);
+  }, [id]);
 
   const getSubCategoryMenus = async () => {
     const token = userData.access_token;
@@ -57,17 +60,8 @@ export const InnerPeace = props => {
     }
   };
 
-  const onEmpaBtnPress = id => {
-    const targetMenu = menus.find(menu => menu.id === id);
-    const title = targetMenu.title;
-    switch (title) {
-      case 'Journeys':
-        props.navigation.navigate('journeys');
-        break;
-      case 'Audio Courses':
-        props.navigation.navigate('audio_courses');
-        break;
-    }
+  const onEmpaPlainBtnPress = menu => {
+    props.navigation.navigate('content', {menu: JSON.stringify(menu)});
   };
 
   return (
@@ -81,19 +75,19 @@ export const InnerPeace = props => {
           />
         ) : (
           <View zIndex={1} style={{marginTop: height * 0.07}}>
-            <VStack space={6} pb="5">
-              {menus.map(menu => (
-                <EmpaBtn
-                  title={menu.title}
-                  key={menu.id}
-                  info={menu.description}
-                  onBtnPress={() => onEmpaBtnPress(menu.id)}
-                  ht={45}
-                  textMT={-9}
-                  iconMT={-22}
-                />
-              ))}
-            </VStack>
+            <ScrollView style={{height: height * 0.6}}>
+              <VStack space={4} pb="6">
+                {menus.map(menu => (
+                  <EmpaPlainBtn
+                    title={menu.title}
+                    key={menu.id}
+                    onBtnPress={() => onEmpaPlainBtnPress(menu)}
+                    ht={45}
+                    textMT={-9}
+                  />
+                ))}
+              </VStack>
+            </ScrollView>
           </View>
         )}
       </Layout>

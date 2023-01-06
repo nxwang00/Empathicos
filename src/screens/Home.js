@@ -64,17 +64,15 @@ export const Home = props => {
 
   const onEmpaBtnPress = id => {
     const selectedMenuTitle = menus.find(menu => menu.id === id).title;
-    switch (selectedMenuTitle) {
-      case 'Soul Vision':
-        props.navigation.navigate('soul_vision', {
-          id: id,
-        });
-        break;
-      case 'Inner Peace':
-        props.navigation.navigate('inner_peace', {
-          id: id,
-        });
-        break;
+    if (selectedMenuTitle === 'Soul Vision') {
+      props.navigation.navigate('soul_vision', {
+        id: id,
+      });
+    } else {
+      props.navigation.navigate('sub_menus', {
+        id: id,
+        title: selectedMenuTitle,
+      });
     }
   };
 
