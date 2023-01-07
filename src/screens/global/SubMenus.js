@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Image, ActivityIndicator, useWindowDimensions} from 'react-native';
-import {Center, VStack, Pressable, View, ScrollView} from 'native-base';
+import {ActivityIndicator, useWindowDimensions} from 'react-native';
+import {VStack, View, ScrollView, Text} from 'native-base';
 import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
 import {EmpaPlainBtn} from '../../components/EmpaPlainBtn';
-import {FormBtn} from '../../components/FormBtn';
 
 export const SubMenus = props => {
   const id = props.route.params.id;
@@ -17,6 +16,8 @@ export const SubMenus = props => {
 
   const [loading, setLoading] = useState(true);
   const [menus, setMenus] = useState([]);
+  const [subjectTitle, setSubjectTitle] = useState('');
+  const [space, setSpace] = useState('0');
 
   const screenInfo = {
     title: title,
@@ -28,6 +29,16 @@ export const SubMenus = props => {
   useEffect(() => {
     setLoading(true);
     getSubCategoryMenus();
+    if (id === 2) {
+      setSubjectTitle('How do you feel?');
+      setSpace(4);
+    } else if (id === 5) {
+      setSubjectTitle('Choose A Journey To Explore');
+      setSpace(6);
+    } else if (id === 6) {
+      setSubjectTitle('');
+      setSpace(4);
+    }
   }, [id]);
 
   const getSubCategoryMenus = async () => {
@@ -43,6 +54,7 @@ export const SubMenus = props => {
       const result = await fetch(url, options);
       const resResult = await result.json();
       if (!resResult.status) {
+        setMenus([]);
         Toast.show({
           type: 'error',
           text1: resResult.message,
@@ -74,15 +86,25 @@ export const SubMenus = props => {
             style={{marginTop: '50%'}}
           />
         ) : (
-          <View zIndex={1} style={{marginTop: height * 0.07}}>
-            <ScrollView style={{height: height * 0.6}}>
-              <VStack space={4} pb="6">
+          <View zIndex={1} style={{marginTop: height * 0.06}}>
+            {subjectTitle && (
+              <Text
+                color="light.50"
+                fontFamily="CenturyGothic"
+                fontSize="xl"
+                textAlign="center"
+                mb="3">
+                {subjectTitle}
+              </Text>
+            )}
+            <ScrollView style={{height: height * 0.55}}>
+              <VStack space={space} pb="6">
                 {menus.map(menu => (
                   <EmpaPlainBtn
                     title={menu.title}
                     key={menu.id}
                     onBtnPress={() => onEmpaPlainBtnPress(menu)}
-                    ht={45}
+                    ht={40}
                     textMT={-9}
                   />
                 ))}

@@ -68,6 +68,8 @@ export const Home = props => {
       props.navigation.navigate('soul_vision', {
         id: id,
       });
+    } else if (selectedMenuTitle === 'Personal Message') {
+      props.navigation.navigate('content_personal_message');
     } else {
       props.navigation.navigate('sub_menus', {
         id: id,
