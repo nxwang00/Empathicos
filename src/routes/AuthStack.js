@@ -30,6 +30,7 @@ import {JourneyTemplate} from '../screens/soulvision/JourneyTemplate';
 import {SubMenus} from '../screens/global/SubMenus';
 import {Content} from '../screens/global/Content';
 import {ContentPersonalMessage} from '../screens/global/ContentPersonalMessage';
+import {ContentSelfInquiry} from '../screens/global/ContentSelfInquiry';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -233,6 +234,13 @@ export const AuthStack = () => {
       <Drawer.Screen
         name="content_personal_message"
         component={ContentPersonalMessage}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="content_self_inquiry"
+        component={ContentSelfInquiry}
         options={{
           drawerItemStyle: {display: 'none'},
         }}

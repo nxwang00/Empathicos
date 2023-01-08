@@ -4,12 +4,31 @@ import {Header} from './Header';
 import {Footer} from './Footer';
 
 export const Layout = props => {
+  let BackgroundImages = [
+    require('../assets/imgs/image_bgstars.png'),
+    require('../assets/imgs/bgheart1.png'),
+    require('../assets/imgs/bgheart2.png'),
+    require('../assets/imgs/bgheart3.png'),
+    require('../assets/imgs/bgheart4.png'),
+    require('../assets/imgs/bgheart5.png'),
+  ];
+
+  let bg = BackgroundImages[0];
+  if (props?.bgIdx === '1') {
+    bg = BackgroundImages[1];
+  } else if (props?.bgIdx === '2') {
+    bg = BackgroundImages[2];
+  } else if (props?.bgIdx === '3') {
+    bg = BackgroundImages[3];
+  } else if (props?.bgIdx === '4') {
+    bg = BackgroundImages[4];
+  } else if (props?.bgIdx === '5') {
+    bg = BackgroundImages[5];
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <ImageBackground
-        source={require('../assets/imgs/image_bgstars.png')}
-        resizeMode="cover"
-        style={styles.image}>
+      <ImageBackground source={bg} resizeMode="cover" style={styles.image}>
         <Header screenInfo={props.screenInfo} />
         {props.children}
         <Footer type={props.screenInfo.footer} />

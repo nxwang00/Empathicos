@@ -73,7 +73,13 @@ export const SubMenus = props => {
   };
 
   const onEmpaPlainBtnPress = menu => {
-    props.navigation.navigate('content', {menu: JSON.stringify(menu)});
+    if (menu.cat_id === 5) {
+      props.navigation.navigate('content_self_inquiry', {
+        menu: JSON.stringify(menu),
+      });
+    } else {
+      props.navigation.navigate('content', {menu: JSON.stringify(menu)});
+    }
   };
 
   return (
