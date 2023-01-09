@@ -1,20 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {
-  NativeBaseProvider,
-  Button,
-  Box,
-  HamburgerIcon,
-  Pressable,
-  Heading,
-  VStack,
-  Text,
-  Center,
-  HStack,
-  Divider,
-  Icon,
-} from 'native-base';
 import {Home} from '../screens/Home';
 import {Profile} from '../screens/user/Profile';
 import {Invite} from '../screens/user/Invite';
@@ -31,10 +16,11 @@ import {SubMenus} from '../screens/global/SubMenus';
 import {Content} from '../screens/global/Content';
 import {ContentPersonalMessage} from '../screens/global/ContentPersonalMessage';
 import {ContentSelfInquiry} from '../screens/global/ContentSelfInquiry';
+import {EnterMagicDoor} from '../screens/magicdoor/Main';
+import {MiniCourse} from '../screens/magicdoor/MiniCourse';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
 
@@ -241,6 +227,20 @@ export const AuthStack = () => {
       <Drawer.Screen
         name="content_self_inquiry"
         component={ContentSelfInquiry}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="magic_door"
+        component={EnterMagicDoor}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="mini_course"
+        component={MiniCourse}
         options={{
           drawerItemStyle: {display: 'none'},
         }}

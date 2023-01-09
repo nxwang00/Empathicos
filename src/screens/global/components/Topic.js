@@ -2,15 +2,19 @@ import React, {useEffect, useState, useRef} from 'react';
 import {useWindowDimensions, StyleSheet, Keyboard} from 'react-native';
 import {View, Center, Text, TextArea, Button, HStack} from 'native-base';
 import RenderHtml from 'react-native-render-html';
+import Toast from 'react-native-toast-message';
+import {useUser} from '../../../context/User';
+import {baseUrl} from '../../../utils/util';
 
 export const Topic = props => {
   const {id, title, description, islast} = props;
 
   const {height, width} = useWindowDimensions();
-
+  const {userData} = useUser();
   const localInputRef = useRef();
 
   const [entry, setEntry] = useState('');
+  const [loading, setLoading] = useState(false);
   const [saveBtnDisable, setSaveBtnDisable] = useState(true);
   const [cancelBtnDisable, setCancelBtnDisable] = useState(true);
 
@@ -47,7 +51,7 @@ export const Topic = props => {
       },
       body: JSON.stringify({
         topic_id: id,
-        entry: entry,
+        entry_text: entry,
         user_id: userData.user.id,
       }),
     };
@@ -66,6 +70,7 @@ export const Topic = props => {
           type: 'success',
           text1: resResult.message,
         });
+        setEntry('');
       }
     } catch (err) {
       Toast.show({
@@ -125,6 +130,8 @@ export const Topic = props => {
           py="1"
           borderRadius="2xl"
           isDisabled={saveBtnDisable}
+          isLoading={loading}
+          isLoadingText="Save"
           onPress={onSavePress}
           _text={{fontSize: 18, fontFamily: 'CenturyGothic'}}>
           Save

@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'native-base';
 import {StyleSheet, Image, useWindowDimensions} from 'react-native';
+import RenderHtml from 'react-native-render-html';
 
 export const EmpaBtn = props => {
   const {title, info, onBtnPress, ht, textMT, iconMT} = props;
@@ -51,10 +52,14 @@ export const EmpaBtn = props => {
                 mt="2">
                 {title}
               </Text>
-              <ScrollView mt="2" style={{maxHeight: height * 0.35}}>
+              <ScrollView
+                mt="2"
+                style={{maxHeight: height * 0.35}}
+                fontSize="md">
                 <Text color="white" fontFamily="CenturyGothic" fontSize="md">
                   {info.replace(regex, '')}
                 </Text>
+                {/* <RenderHtml contentWidth={width} source={{html: info}} /> */}
               </ScrollView>
               <Button
                 bg="#143c6d"

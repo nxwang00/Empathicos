@@ -16,6 +16,7 @@ export const Home = props => {
 
   const [loading, setLoading] = useState(true);
   const [menus, setMenus] = useState([]);
+  const [btnEnter, setBtnEnter] = useState({});
 
   const screenInfo = {
     title: 'Empathicos',
@@ -46,7 +47,14 @@ export const Home = props => {
           text1: resResult.message,
         });
       } else {
-        setMenus(resResult.results);
+        const btnMenus = resResult.results.filter(
+          menu => menu.is_enter_magic_door === null,
+        );
+        setMenus(btnMenus);
+        const btnMagic = resResult.results.find(
+          menu => menu.is_enter_magic_door === 1,
+        );
+        setBtnEnter(btnMagic);
       }
     } catch (err) {
       Toast.show({
@@ -59,7 +67,7 @@ export const Home = props => {
   };
 
   const onEnter = () => {
-    console.log('click enter');
+    props.navigation.navigate('magic_door', {id: btnEnter.id});
   };
 
   const onEmpaBtnPress = id => {
@@ -107,7 +115,7 @@ export const Home = props => {
                 source={require('../assets/imgs/image_doorway.png')}
                 style={{width: 200, height: 140, resizeMode: 'stretch'}}
               />
-              <FormBtn title="Enter" onBtnPress={onEnter} />
+              <FormBtn title={btnEnter.title} onBtnPress={onEnter} />
             </Center>
           </View>
         )}

@@ -12,26 +12,25 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
-import {Template} from './components/Template';
+import {Course} from './components/Course';
 
-export const JourneyTemplate = props => {
+export const MiniCourse = props => {
   const id = props.route.params.id;
   const title = props.route.params.title;
-  const isFocused = useIsFocused();
 
   const scrollViewRef = useRef(null);
   const {height, width} = useWindowDimensions();
   const {userData} = useUser();
 
   const [screenInfo, setScreenInfo] = useState({
-    title: '',
+    title: title,
     subTitle: '',
-    header: '3',
-    footer: '2',
+    header: '2',
+    footer: '1',
   });
   const [loading, setLoading] = useState(true);
   const [screenIndex, setScreenIndex] = useState(0);
-  const [templates, setTemplates] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [nextBtnDisable, setNextBtnDisable] = useState(false);
   const [backBtnDisable, setBackBtnDisable] = useState(true);
 
@@ -40,12 +39,12 @@ export const JourneyTemplate = props => {
     setScreenIndex(0);
     setNextBtnDisable(false);
     setBackBtnDisable(true);
-    getTemplates();
+    getCourses();
   }, [id]);
 
-  const getTemplates = async () => {
+  const getCourses = async () => {
     const token = userData.access_token;
-    const url = `${baseUrl}/journey/${id}`;
+    const url = `${baseUrl}/mini-courses/${id}`;
     var options = {
       headers: {
         Accept: 'application/json',
@@ -61,16 +60,14 @@ export const JourneyTemplate = props => {
           text1: resResult.message,
         });
       } else {
-        const templatelist = resResult.results;
-        console.log(templatelist[0]);
-        setTemplates(templatelist);
+        const courselist = resResult.results;
+        setCourses(courselist);
 
         setScreenInfo({
           ...screenInfo,
-          title: title,
-          subTitle: templatelist[0].value.title,
+          subTitle: courselist[0].title,
         });
-        if (templatelist.length === 1) {
+        if (courselist.length === 1) {
           setNextBtnDisable(true);
         }
       }
@@ -98,7 +95,7 @@ export const JourneyTemplate = props => {
 
   const onNextScrollValidate = async screenIdx => {
     // validation if next course exist
-    if (screenIdx >= templates.length - 1) {
+    if (screenIdx >= courses.length - 1) {
       setNextBtnDisable(true);
     }
     setBackBtnDisable(false);
@@ -116,7 +113,7 @@ export const JourneyTemplate = props => {
     // upgrade the screen information on header
     setScreenInfo({
       ...screenInfo,
-      subTitle: templates[screenIdx].value.title,
+      subTitle: courses[screenIdx].title,
     });
 
     setScreenIndex(screenIdx);
@@ -165,12 +162,12 @@ export const JourneyTemplate = props => {
               pagingEnabled
               showsHorizontalScrollIndicator={false}
               onScrollEndDrag={event => onFlipScroll(event)}>
-              {templates.map(template => (
-                <Template
-                  key={template.id}
+              {courses.map(course => (
+                <Course
+                  key={course.id}
                   selectedIdx={screenIndex}
-                  image={template.value.image}
-                  description={template.value.description}
+                  image={course.image}
+                  description={course.description}
                 />
               ))}
             </Animated.ScrollView>
