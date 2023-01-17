@@ -31,11 +31,12 @@ export const MyJournal = props => {
     footer: '1',
   };
 
-  const [journal, setJournal] = useState('');
+  const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [hideFooter, setHideFooter] = useState(false);
   const [isDisable, setIsDisable] = useState(true);
+  const [journalID, setJournalID] = useState('');
 
   useEffect(() => {
     const keyboardDidHideSubscription = Keyboard.addListener(
@@ -65,7 +66,7 @@ export const MyJournal = props => {
   };
 
   const onJounalChange = txt => {
-    setJournal(txt);
+    setDescription(txt);
 
     if (txt && title) setIsDisable(false);
     else setIsDisable(true);
@@ -73,13 +74,62 @@ export const MyJournal = props => {
 
   const onTitleChange = txt => {
     setTitle(txt);
-    if (txt && journal) setIsDisable(false);
+    if (txt && description) setIsDisable(false);
     else setIsDisable(true);
   };
 
-  const onJournalSave = () => {};
+  const onJournalSave = async () => {
+    const token = userData.access_token;
+    const url = `${baseUrl}/journal/save`;
+    const data = {
+      title: title,
+      description: description,
+      user_id: userData.user.id,
+    };
 
-  const onAddJourneyPress = () => {};
+    if (journalID) {
+      data.id = journalID;
+    }
+
+    var options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify(data),
+    };
+    setLoading(true);
+    try {
+      const result = await fetch(url, options);
+      const resResult = await result.json();
+      setLoading(false);
+      if (!resResult.status) {
+        Toast.show({
+          type: 'error',
+          text1: resResult.message,
+        });
+      } else {
+        Toast.show({
+          type: 'success',
+          text1: resResult.message,
+        });
+        setJournalID(resResult.results.id);
+      }
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: 'Network not working',
+      });
+    }
+  };
+
+  const onAddJourneyPress = () => {
+    setJournalID('');
+    setTitle('');
+    setDescription('');
+  };
 
   return (
     <Layout screenInfo={screenInfo} bgIdx="6" hideFooter={hideFooter}>
@@ -129,7 +179,7 @@ export const MyJournal = props => {
               placeholder="Description..."
               placeholderTextColor="gray.700"
               h="150"
-              value={journal}
+              value={description}
               onChangeText={txt => onJounalChange(txt)}
             />
           </View>
