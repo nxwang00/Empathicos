@@ -76,6 +76,9 @@ export const EnterMagicDoor = props => {
           title: menu.title,
         });
         break;
+      case 3:
+        props.navigation.navigate('my_journal');
+        break;
     }
   };
 

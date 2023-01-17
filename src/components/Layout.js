@@ -11,6 +11,7 @@ export const Layout = props => {
     require('../assets/imgs/bgheart3.png'),
     require('../assets/imgs/bgheart4.png'),
     require('../assets/imgs/bgheart5.png'),
+    require('../assets/imgs/bgnight.png'),
   ];
 
   let bg = BackgroundImages[0];
@@ -24,6 +25,8 @@ export const Layout = props => {
     bg = BackgroundImages[4];
   } else if (props?.bgIdx === '5') {
     bg = BackgroundImages[5];
+  } else if (props?.bgIdx === '6') {
+    bg = BackgroundImages[6];
   }
 
   return (
@@ -31,7 +34,7 @@ export const Layout = props => {
       <ImageBackground source={bg} resizeMode="cover" style={styles.image}>
         <Header screenInfo={props.screenInfo} />
         {props.children}
-        <Footer type={props.screenInfo.footer} />
+        {!props?.hideFooter && <Footer type={props.screenInfo.footer} />}
       </ImageBackground>
     </SafeAreaView>
   );

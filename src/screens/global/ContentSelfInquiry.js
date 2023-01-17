@@ -32,7 +32,7 @@ export const ContentSelfInquiry = props => {
 
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [zindex, setZindex] = useState('0');
+  const [hideFooter, setHideFooter] = useState(false);
 
   useEffect(() => {
     switch (menuObj.id) {
@@ -75,11 +75,11 @@ export const ContentSelfInquiry = props => {
   }, [isFocused]);
 
   const keyboardDidHideCallback = () => {
-    setZindex('0');
+    setHideFooter(false);
   };
 
   const keyboardDidShowCallback = () => {
-    setZindex('1');
+    setHideFooter(true);
   };
 
   const getTopics = async () => {
@@ -114,7 +114,7 @@ export const ContentSelfInquiry = props => {
   };
 
   return (
-    <Layout screenInfo={screenInfo} bgIdx={bgIdx}>
+    <Layout screenInfo={screenInfo} bgIdx={bgIdx} hideFooter={hideFooter}>
       {loading ? (
         <ActivityIndicator
           color="#fff"
@@ -122,7 +122,7 @@ export const ContentSelfInquiry = props => {
           style={{marginTop: '50%'}}
         />
       ) : (
-        <ScrollView style={{height: height * 0.65}} mt="6" zIndex={zindex}>
+        <ScrollView style={{height: height * 0.65}} mt="6">
           {topics.map((topic, idx) =>
             idx === topics.length - 1 ? (
               <Topic
