@@ -153,7 +153,7 @@ export const Topic = props => {
 
 const styles = StyleSheet.create({
   last: {
-    marginBottom: 90,
+    marginBottom: 60,
   },
   nolast: {
     marginBottom: 0,

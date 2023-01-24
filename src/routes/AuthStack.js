@@ -19,6 +19,7 @@ import {ContentSelfInquiry} from '../screens/global/ContentSelfInquiry';
 import {EnterMagicDoor} from '../screens/magicdoor/Main';
 import {MiniCourse} from '../screens/magicdoor/MiniCourse';
 import {MyJournal} from '../screens/magicdoor/MyJournal';
+import {AskAna} from '../screens/global/AskAna';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -249,6 +250,13 @@ export const AuthStack = () => {
       <Drawer.Screen
         name="my_journal"
         component={MyJournal}
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
+      />
+      <Drawer.Screen
+        name="ask_ana"
+        component={AskAna}
         options={{
           drawerItemStyle: {display: 'none'},
         }}

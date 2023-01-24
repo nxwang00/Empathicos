@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/core';
 import {StyleSheet, View, Image, useWindowDimensions} from 'react-native';
 import {Pressable, HStack} from 'native-base';
 
 export const Footer = props => {
   const {height, width} = useWindowDimensions();
+  const navigation = useNavigation();
 
   let footerEle = (
     <Image
@@ -31,7 +33,7 @@ export const Footer = props => {
               style={{width: width * 0.3, height: height * 0.15}}
             />
           </Pressable>
-          <Pressable onPress={() => navigation.navigate('home')}>
+          <Pressable onPress={() => navigation.navigate('ask_ana')}>
             <Image
               source={require('../assets/imgs/ask_ana.png')}
               style={{width: width * 0.32, height: height * 0.16}}

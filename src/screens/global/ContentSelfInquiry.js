@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   Keyboard,
 } from 'react-native';
-import {ScrollView} from 'native-base';
+import {ScrollView, KeyboardAvoidingView} from 'native-base';
 import Toast from 'react-native-toast-message';
 import {useIsFocused} from '@react-navigation/native';
 import {Layout} from '../../components/Layout';
@@ -122,27 +122,30 @@ export const ContentSelfInquiry = props => {
           style={{marginTop: '50%'}}
         />
       ) : (
-        <ScrollView style={{height: height * 0.65}} mt="6">
-          {topics.map((topic, idx) =>
-            idx === topics.length - 1 ? (
-              <Topic
-                key={topic.id}
-                title={topic.title}
-                description={topic.description}
-                id={topic.id}
-                islast={true}
-              />
-            ) : (
-              <Topic
-                key={topic.id}
-                title={topic.title}
-                description={topic.description}
-                id={topic.id}
-                islast={false}
-              />
-            ),
-          )}
-        </ScrollView>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <ScrollView style={{height: height * 0.65}} mt="9">
+            {topics.map((topic, idx) =>
+              idx === topics.length - 1 ? (
+                <Topic
+                  key={topic.id}
+                  title={topic.title}
+                  description={topic.description}
+                  id={topic.id}
+                  islast={true}
+                />
+              ) : (
+                <Topic
+                  key={topic.id}
+                  title={topic.title}
+                  description={topic.description}
+                  id={topic.id}
+                  islast={false}
+                />
+              ),
+            )}
+          </ScrollView>
+        </KeyboardAvoidingView>
       )}
     </Layout>
   );

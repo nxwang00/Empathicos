@@ -4,25 +4,24 @@ import {
   View,
   VStack,
   HStack,
-  Button,
   Icon,
   Text,
   ScrollView,
-  TextArea,
-  Input,
   Pressable,
+  KeyboardAvoidingView,
 } from 'native-base';
 import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {baseUrl} from '../../utils/util';
 import {useUser} from '../../context/User';
 import {Layout} from '../../components/Layout';
+import {PlainBtn} from '../../components/PlainBtn';
+import {PlainInput} from '../../components/PlainInput';
+import {PlainTextArea} from '../../components/PlainTextArea';
 
 export const MyJournal = props => {
   const {height, width} = useWindowDimensions();
   const {userData} = useUser();
-  const descInputRef = useRef();
-  const titleInputRef = useRef();
 
   const screenInfo = {
     title: 'My Journal',
@@ -57,8 +56,6 @@ export const MyJournal = props => {
 
   const keyboardDidHideCallback = () => {
     setHideFooter(false);
-    descInputRef.current.blur?.();
-    titleInputRef.current.blur?.();
   };
 
   const keyboardDidShowCallback = () => {
@@ -133,86 +130,66 @@ export const MyJournal = props => {
 
   return (
     <Layout screenInfo={screenInfo} bgIdx="6" hideFooter={hideFooter}>
-      <ScrollView style={{marginTop: height * 0.05}}>
-        <VStack space={3} alignItems="center" px="6">
-          <Text
-            fontSize="md"
-            fontFamily="CenturyGothic"
-            color="white"
-            textAlign="center">
-            Journaling helps us commune with our deeper selves and discover.
-            Enjoy the prompts below or come up with new ones!
-          </Text>
-          <Text
-            fontSize="xl"
-            fontFamily="CenturyGothic"
-            color="white"
-            textAlign="center">
-            I am thankful... I love...
-          </Text>
-          <Text
-            mt="-3"
-            fontSize="xl"
-            fontFamily="CenturyGothic"
-            color="white"
-            textAlign="center">
-            I dream... I feel... I know...
-          </Text>
-          <View bg="white" style={{width: width * 0.85}} opacity="0.8">
-            <Input
-              placeholder="Title"
-              placeholderTextColor="gray.700"
-              value={title}
-              onChangeText={onTitleChange}
-              ref={ref => {
-                titleInputRef && (titleInputRef.current = ref);
-              }}
-            />
-            <TextArea
-              ref={ref => {
-                descInputRef && (descInputRef.current = ref);
-              }}
-              focusOutlineColor="primary.400"
+      <KeyboardAvoidingView
+        zIndex={1}
+        // pb="4"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView style={{marginTop: height * 0.05}}>
+          <VStack space={3} alignItems="center" px="6">
+            <Text
+              fontSize="md"
               fontFamily="CenturyGothic"
-              fontSize="12"
-              numberOfLines={10}
-              placeholder="Description..."
-              placeholderTextColor="gray.700"
-              h="150"
-              value={description}
-              onChangeText={txt => onJounalChange(txt)}
-            />
-          </View>
-          <HStack alignItems="center">
-            <Button
-              bg="#9e3a95"
-              px="4"
-              py="0.3"
-              borderRadius="4"
-              borderColor="amber.300"
-              borderWidth="1"
-              isLoading={loading}
-              isLoadingText="Saving"
-              _text={{
-                fontSize: 18,
-                fontFamily: 'CenturyGothic',
-                fontWeight: 600,
-              }}
-              isDisabled={isDisable}
-              onPress={onJournalSave}>
-              Save
-            </Button>
-            <Pressable px="3" borderRadius="50" onPress={onAddJourneyPress}>
-              <Icon
-                as={MaterialCommunityIcons}
-                name="plus-thick"
-                color="amber.400"
-                size={8}
+              color="white"
+              textAlign="center">
+              Journaling helps us commune with our deeper selves and discover.
+              Enjoy the prompts below or come up with new ones!
+            </Text>
+            <Text
+              fontSize="xl"
+              fontFamily="CenturyGothic"
+              color="white"
+              textAlign="center">
+              I am thankful... I love...
+            </Text>
+            <Text
+              mt="-3"
+              fontSize="xl"
+              fontFamily="CenturyGothic"
+              color="white"
+              textAlign="center">
+              I dream... I feel... I know...
+            </Text>
+            <View bg="white" style={{width: width * 0.85}} opacity="0.8">
+              <PlainInput
+                placeholder="Title"
+                value={title}
+                onChange={onTitleChange}
               />
-            </Pressable>
-          </HStack>
-        </VStack>
-      </ScrollView>
+              <PlainTextArea
+                placeholder="Description"
+                value={description}
+                onChange={txt => onJounalChange(txt)}
+              />
+            </View>
+            <HStack alignItems="center">
+              <PlainBtn
+                loading={loading}
+                isDisable={isDisable}
+                onPress={onJournalSave}
+                btnLabel="Save"
+              />
+              <Pressable px="3" borderRadius="50" onPress={onAddJourneyPress}>
+                <Icon
+                  as={MaterialCommunityIcons}
+                  name="plus-thick"
+                  color="amber.400"
+                  size={8}
+                />
+              </Pressable>
+            </HStack>
+          </VStack>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Layout>
   );
 };
