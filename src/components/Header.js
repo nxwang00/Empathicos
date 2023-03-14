@@ -12,6 +12,7 @@ import {
   Menu,
   Icon,
   Divider,
+  Center,
 } from 'native-base';
 import Toast from 'react-native-toast-message';
 import {useUser} from '../context/User';
@@ -71,67 +72,72 @@ export const Header = props => {
       {screenInfo.header === '3' ? <HeaderBg num="1" /> : <HeaderBg />}
       <HStack justifyContent={justifyContentStyle} alignItems="center" px="3">
         {screenInfo.header === '1' && (
-          <Pressable onPress={() => navigation.openDrawer()}>
+          <Pressable onPress={() => navigation.openDrawer()} w="1/4">
             <HamburgerIcon size="7" color="white" />
           </Pressable>
         )}
         {(screenInfo.header === '2' || screenInfo.header === '3') && (
-          <Pressable onPress={onGoBackScreen}>
+          <Pressable onPress={onGoBackScreen} w="1/4">
             <ChevronLeftIcon size="6" color="white" />
           </Pressable>
         )}
-        <Pressable onPress={() => navigation.navigate('home')}>
-          <Image
-            source={require('../assets/imgs/icon_app.png')}
-            style={{width: width * 0.15, height: width * 0.15}}
-          />
-        </Pressable>
+        <Center w="1/2">
+          <Pressable onPress={() => navigation.navigate('home')}>
+            <Image
+              source={require('../assets/imgs/icon_app.png')}
+              style={{width: width * 0.15, height: width * 0.15}}
+            />
+          </Pressable>
+        </Center>
         {screenInfo.header !== '0' && (
-          <Menu
-            trigger={triggerProps => {
-              return (
-                <Pressable
-                  accessibilityLabel="More options menu"
-                  {...triggerProps}>
-                  <Image
-                    source={require('../assets/imgs/icon_profile.png')}
-                    style={{width: width * 0.1, height: width * 0.1}}
-                  />
-                </Pressable>
-              );
-            }}
-            bg="#98338c"
-            borderWidth="2"
-            borderColor="amber.300"
-            borderRadius="md"
-            mt="7">
-            <AvatarMenuItem
-              title="My Profie"
-              icon="account"
-              onItemPress={() => navigation.navigate('profile')}
-            />
-            <AvatarMenuItem
-              title="Invite Friends"
-              icon="account-multiple"
-              onItemPress={() => navigation.navigate('invite')}
-            />
-            <AvatarMenuItem
-              title="Journeys"
-              icon="seal"
-              onItemPress={() => navigation.navigate('journey')}
-            />
-            <AvatarMenuItem
-              title="Favorites"
-              icon="heart"
-              onItemPress={() => navigation.navigate('favorite')}
-            />
-            <Divider mt="2" w="100%" />
-            <AvatarMenuItem
-              title="Logout"
-              icon="logout"
-              onItemPress={onLogoutPress}
-            />
-          </Menu>
+          <HStack w="1/4" justifyContent="flex-end">
+            {screenInfo.isCart && <Text>Cart</Text>}
+            <Menu
+              trigger={triggerProps => {
+                return (
+                  <Pressable
+                    accessibilityLabel="More options menu"
+                    {...triggerProps}>
+                    <Image
+                      source={require('../assets/imgs/icon_profile.png')}
+                      style={{width: width * 0.1, height: width * 0.1}}
+                    />
+                  </Pressable>
+                );
+              }}
+              bg="#98338c"
+              borderWidth="2"
+              borderColor="amber.300"
+              borderRadius="md"
+              mt="7">
+              <AvatarMenuItem
+                title="My Profie"
+                icon="account"
+                onItemPress={() => navigation.navigate('profile')}
+              />
+              <AvatarMenuItem
+                title="Invite Friends"
+                icon="account-multiple"
+                onItemPress={() => navigation.navigate('invite')}
+              />
+              <AvatarMenuItem
+                title="Journeys"
+                icon="seal"
+                onItemPress={() => navigation.navigate('journey')}
+              />
+              <AvatarMenuItem
+                title="Favorites"
+                icon="heart"
+                onItemPress={() => navigation.navigate('favorite')}
+              />
+              <Divider mt="2" w="100%" />
+              <AvatarMenuItem
+                title="Logout"
+                icon="logout"
+                onItemPress={onLogoutPress}
+              />
+            </Menu>
+          </HStack>
         )}
       </HStack>
       <VStack alignItems="center">

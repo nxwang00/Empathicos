@@ -27,7 +27,7 @@ export const Footer = props => {
           justifyContent="space-between"
           px="4"
           pb="2">
-          <Pressable onPress={() => navigation.navigate('home')}>
+          <Pressable onPress={() => navigation.navigate('visit_shop')}>
             <Image
               source={require('../assets/imgs/visit_shop.png')}
               style={{width: width * 0.3, height: height * 0.15}}
